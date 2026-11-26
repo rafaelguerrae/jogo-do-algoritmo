@@ -28,21 +28,21 @@ Nos dois modos, no fim o visitante vê o que fez os pontos subirem, aplica os re
 Requer Node 22.12 ou mais novo (`.nvmrc`).
 
 ```bash
-npm install
-npm run dev          # desenvolvimento: http://localhost:3000
-npm run build        # gera a pasta out/ (site estático)
-npm start            # serve out/ localmente
+pnpm install
+pnpm dev   # desenvolvimento: http://localhost:3000
+pnpm build # gera a pasta out/ (site estático)
+pnpm start # serve out/ localmente
 ```
 
-Para o dia da Mostra: rode `npm run build` antes, com internet, e depois `npm start`. A partir daí **nada depende de internet**.
-O site também pode ser publicado em qualquer hospedagem estática (Vercel, GitHub Pages). Em GitHub Pages use `NEXT_PUBLIC_BASE_PATH=/nome-do-repositorio npm run build`.
+Para o dia da Mostra: rode `pnpm build` antes, com internet, e depois `pnpm start`. A partir daí **nada depende de internet**.
+O site também pode ser publicado em qualquer hospedagem estática (Vercel, GitHub Pages). Em GitHub Pages use `NEXT_PUBLIC_BASE_PATH=/nome-do-repositorio pnpm build`.
 
 ## Qualidade
 
 ```bash
-npm run check        # tipos + lint + testes unitários + build
-npm run test:e2e     # Playwright: jogo nos dois modos, apresentação, banner, baralho (npx playwright install chromium na 1ª vez)
-npm run test:coverage
+pnpm check    # tipos + lint + testes unitários + build
+pnpm test:e2e # Playwright: jogo nos dois modos, apresentação, banner, baralho (pnpm exec playwright install chromium na 1ª vez)
+pnpm test:coverage
 ```
 
 O CI (`.github/workflows/ci.yml`) roda `quality`, `build`, `e2e` e `banner` em todo PR; há ainda o Dependabot. Veja `CONTRIBUTING.md` e `SECURITY.md`.
@@ -50,8 +50,8 @@ O CI (`.github/workflows/ci.yml`) roda `quality`, `build`, `e2e` e `banner` em t
 ## Banner
 
 ```bash
-npx playwright install chromium   # uma vez
-npm run banner:build              # PDF vetorial 900 × 1200 mm + PNG de prévia em public/banner/
+pnpm exec playwright install chromium # uma vez
+pnpm banner:build                     # PDF vetorial 900 × 1200 mm + PNG de prévia em public/banner/
 ```
 
 A fonte é `public/banner/banner.html`. O PDF sai em RGB e sem sangria: confirme formato e prova de cor com a gráfica.
@@ -73,6 +73,6 @@ Tudo fica no `localStorage` do navegador (chaves `jda:*`). Exporte o CSV em `/re
 ## Edição rápida
 
 - Cartas: `src/lib/deck.ts` · Regras e pesos: `src/lib/game.ts` · Métricas: `src/lib/metricas.ts`
-- Roteiro: `src/lib/roteiro.ts` (depois `npm run roteiro:gerar` para atualizar `docs/ROTEIRO.md`)
+- Roteiro: `src/lib/roteiro.ts` (depois `pnpm roteiro:gerar` para atualizar `docs/ROTEIRO.md`)
 - Apresentação: slides em `src/components/apresentacao/slides.tsx`; textos compartilhados (fontes, mecanismos, grupo) em `src/lib/conteudo.ts`
 - Identidade visual: `src/app/globals.css` (papel `#EFE7D6`, tinta `#16130E`, laranja `#FF4A14`; fontes Archivo e IBM Plex Mono, ambas embutidas)

@@ -1,5 +1,5 @@
 // Gera o banner 90 x 120 cm a partir de public/banner/banner.html.
-// Uso: npm run banner:build   (precisa do Chromium do Playwright: npx playwright install chromium)
+// Uso: pnpm banner:build   (precisa do Chromium do Playwright: pnpm exec playwright install chromium)
 // Saída (em public/banner/): PDF vetorial em 900 x 1200 mm e PNG de prévia em 2700 x 3600 px.
 import { mkdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";

@@ -29,10 +29,10 @@ export default function Banner() {
           </div>
           <h3 style={{ marginTop: 24 }}>Gerar de novo (build)</h3>
           <p style={{ marginBottom: 10 }}>Depois de editar o banner em public/banner/banner.html, gere os arquivos com:</p>
-          <pre className="codigo">npm run banner:build</pre>
+          <pre className="codigo">pnpm banner:build</pre>
           <p className="nota" style={{ fontSize: 14 }}>
-            Precisa do Chromium do Playwright (npx playwright install chromium). No GitHub, o fluxo “Banner” gera os arquivos como artefato
-            do PR.
+            Precisa do Chromium do Playwright (pnpm exec playwright install chromium). No GitHub, o fluxo “Banner” gera os arquivos como
+            artefato do PR.
           </p>
         </div>
 
