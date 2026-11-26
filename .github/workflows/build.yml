@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Tipos (tsc)
+        run: npm run lint
+      - name: Build estático
+        run: npm run build
+      - name: Confere o export estático
+        run: |
+          for p in index jogo/index tela/index resultados/index baralho/index roteiro/index; do
+            test -f "out/$p.html" || test -f "out/$p" || { echo "faltando out/$p"; exit 1; }
+          done
+      - name: Auditoria de dependências
+        run: npm audit --audit-level=high
