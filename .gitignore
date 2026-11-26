@@ -3,3 +3,11 @@ node_modules
 out
 next-env.d.ts
 *.tsbuildinfo
+coverage
+playwright-report
+test-results
+.env*
+!.env.example
+.DS_Store
+.claude/
+AGENTS.md

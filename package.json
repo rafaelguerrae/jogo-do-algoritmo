@@ -7,7 +7,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "npx serve out",
-    "lint": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "banner:build": "node scripts/build-banner.mjs",
+    "roteiro:gerar": "node scripts/gerar-roteiro.mjs",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "dependencies": {
     "next": "^16.4.6",
@@ -15,9 +25,17 @@
     "react-dom": "^19.3.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.6.9",
+    "@playwright/test": "^1.65.1",
     "@types/node": "^26.6.11",
     "@types/react": "^19.3.3",
     "@types/react-dom": "^19.3.0",
-    "typescript": "^7.0.2"
+    "@vitest/coverage-v8": "^5.1.2",
+    "serve": "^14.2.8",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.2"
+  },
+  "engines": {
+    "node": ">=22.12"
   }
 }

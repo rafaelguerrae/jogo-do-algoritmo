@@ -66,6 +66,7 @@ Quando a pessoa recusa uma corrida de risco (chuva forte, rua sem luz) e o siste
 
 ## Dicas para o grupo
 
+- Dois modos: com cartas (você opera) e sem cartas (as corridas aparecem na tela do visitante, ele decide ali e você só acompanha). No digital, deixe a tela do visitante aberta.
 - Falar devagar e olhar para o visitante, não para a tela.
 - Operador decide rápido: atalhos A (aceitar), S (recusar por segurança), R (recusar), N (próxima), P (pausa).
 - Quem observa de fora pode ver a tela do visitante, boa para atrair público.

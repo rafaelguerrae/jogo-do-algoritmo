@@ -1,5 +1,5 @@
 "use client";
-import { REQUISITOS, resolvidas, somaPor, type Estado, type Fonte } from "@/lib/game";
+import { type Estado, type Fonte, REQUISITOS, resolvidas, somaPor } from "@/lib/game";
 
 export default function Resumo({ e, grande = false, alternar }: { e: Estado; grande?: boolean; alternar?: (f: Fonte) => void }) {
   const ativo = (f: Fonte) => (e.aplicados ?? []).includes(f);
@@ -7,16 +7,31 @@ export default function Resumo({ e, grande = false, alternar }: { e: Estado; gra
   return (
     <div className="painel" style={grande ? { fontSize: "clamp(13px,1.2vw,19px)" } : undefined}>
       <h2>O que fez os pontos subirem</h2>
-      <p className="rotulo" style={{ marginBottom: 12 }}>{resolvidas(e)} corridas · {e.pontos} pontos (fictícios)</p>
+      <p className="rotulo" style={{ marginBottom: 12 }}>
+        {resolvidas(e)} corridas · {e.pontos} pontos (fictícios)
+      </p>
       <table className="tab" style={grande ? { fontSize: "inherit" } : undefined}>
-        <thead><tr><th>Mecanismo</th><th>Pontos</th><th>Requisito ergonômico</th><th>{alternar ? "Aplicar" : "Aplicado?"}</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Mecanismo</th>
+            <th>Pontos</th>
+            <th>Requisito ergonômico</th>
+            <th>{alternar ? "Aplicar" : "Aplicado?"}</th>
+          </tr>
+        </thead>
         <tbody>
           {REQUISITOS.map((r) => {
             const p = somaPor(e, r.fonte);
             return (
               <tr key={r.fonte}>
-                <td><b>{r.titulo}</b><br /><span className="cinza">{r.regra}</span></td>
-                <td><span className={`pt ${p === 0 || ativo(r.fonte) ? "zero" : ""}`}>{ativo(r.fonte) ? 0 : p}</span></td>
+                <td>
+                  <b>{r.titulo}</b>
+                  <br />
+                  <span className="cinza">{r.regra}</span>
+                </td>
+                <td>
+                  <span className={`pt ${p === 0 || ativo(r.fonte) ? "zero" : ""}`}>{ativo(r.fonte) ? 0 : p}</span>
+                </td>
                 <td>{r.requisito}</td>
                 {alternar && (
                   <td>
