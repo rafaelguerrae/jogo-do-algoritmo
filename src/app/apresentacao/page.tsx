@@ -78,7 +78,7 @@ export default function Apresentacao() {
         <section className={`ap-slide ${s.escuro ? "escuro" : ""}`} aria-label={`Slide ${i + 1} de ${total}: ${s.titulo}`} key={s.id}>
           {s.corpo}
           <div className="ap-rodape">
-            <span>Jogo do Algoritmo · Grupo 4 · UFABC</span>
+            <span>Jogo do Algoritmo</span>
             <span>
               {i + 1} / {total}
             </span>

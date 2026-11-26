@@ -22,7 +22,7 @@ export default function Nav() {
   return (
     <nav className="topo semprint" aria-label="Principal">
       <span className="marca">
-        JOGO DO ALGORITMO · <b>UFABC</b>
+        JOGO DO ALGORITMO
       </span>
       {LINKS.map(([href, nome]) => (
         <Link key={href} href={href} aria-current={p === href ? "page" : undefined}>

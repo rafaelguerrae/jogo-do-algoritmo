@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@11.1.3",
-  "description": "Jogo do Algoritmo — I Mostra de Ergonomia da UFABC (ESGE006-23)",
+  "description": "Jogo do Algoritmo",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

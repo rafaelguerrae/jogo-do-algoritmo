@@ -22,9 +22,12 @@ try {
   await pagina.goto(fonte);
   await pagina.evaluate(() => document.fonts.ready);
   await pagina.screenshot({ path: PNG });
-  // zoom amplia o layout inteiro sem rasterizar: o PDF continua vetorial
-  await pagina.addStyleTag({ content: `html{zoom:${PX_POR_MM}}` });
-  await pagina.pdf({ path: PDF, width: "900mm", height: "1200mm", printBackground: true, pageRanges: "1" });
+  // zoom amplia o layout inteiro sem rasterizar: o PDF continua vetorial.
+  // O @page do HTML está em px (900 x 1200); aqui ele é refeito em mm, senão o zoom estoura a página e o conteúdo sai cortado.
+  // O overflow:hidden no html faz o corte do body valer (sem ele vai para a viewport) e a trama de pontos, que passa da borda,
+  // não aumenta a largura da página: o Chromium encolheria tudo no PDF para caber (as barras pretas não chegavam à borda).
+  await pagina.addStyleTag({ content: `@page{size:900mm 1200mm;margin:0}html{zoom:${PX_POR_MM};overflow:hidden}` });
+  await pagina.pdf({ path: PDF, width: "900mm", height: "1200mm", printBackground: true, preferCSSPageSize: true, pageRanges: "1" });
 } finally {
   await navegador.close();
 }
