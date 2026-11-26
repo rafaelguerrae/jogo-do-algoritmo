@@ -31,4 +31,4 @@ try {
 } finally {
   await navegador.close();
 }
-console.log(`Banner gerado:\n  ${PDF}\n  ${PNG}`);
+process.stdout.write(`Banner gerado:\n  ${PDF}\n  ${PNG}\n`);

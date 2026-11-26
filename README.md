@@ -1,6 +1,6 @@
 # jogo-do-algoritmo
 
-Site do projeto do **Grupo 4** (ESGE006-23, Engenharia de Segurança do Trabalho: Ergonomia): gestão algorítmica e carga mental no trabalho por aplicativo.                                                           |
+Site do projeto do **Grupo 4** (ESGE006-23, Engenharia de Segurança do Trabalho: Ergonomia): gestão algorítmica e carga mental no trabalho por aplicativo.
 
 ## Dois modos de jogo
 

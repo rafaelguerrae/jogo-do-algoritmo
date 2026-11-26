@@ -52,7 +52,7 @@
         "useButtonType": "off",
         "useSemanticElements": "off"
       },
-      "recommended": true
+      "preset": "recommended"
     }
   }
 }
