@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!public", "!docs/ROTEIRO.md", "!package-lock.json", ".github/**"]
+    "includes": ["**", "!public", "!docs/ROTEIRO.md", "!pnpm-lock.yaml", ".github/**"]
   },
   "formatter": {
     "enabled": true,
@@ -52,7 +52,7 @@
         "useButtonType": "off",
         "useSemanticElements": "off"
       },
-      "recommended": true
+      "preset": "recommended"
     }
   }
 }

@@ -10,4 +10,3 @@ test-results
 !.env.example
 .DS_Store
 .claude/
-AGENTS.md

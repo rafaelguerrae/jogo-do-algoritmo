@@ -21,9 +21,7 @@ export default function Nav() {
   if (SEM_NAV.has(p)) return null;
   return (
     <nav className="topo semprint" aria-label="Principal">
-      <span className="marca">
-        JOGO DO ALGORITMO · <b>UFABC</b>
-      </span>
+      <span className="marca">JOGO DO ALGORITMO</span>
       {LINKS.map(([href, nome]) => (
         <Link key={href} href={href} aria-current={p === href ? "page" : undefined}>
           {nome}

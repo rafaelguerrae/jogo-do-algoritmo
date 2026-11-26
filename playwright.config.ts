@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const PORTA = 3100;
-const servir = `npx serve out -l ${PORTA} --no-clipboard`;
+const servir = `pnpm exec serve out -l ${PORTA} --no-clipboard`;
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -13,7 +13,7 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } } }],
   webServer: {
     // o site é estático: constrói e serve a pasta out/ (na CI o build já foi feito antes)
-    command: process.env.CI ? servir : `npm run build && ${servir}`,
+    command: process.env.CI ? servir : `pnpm build && ${servir}`,
     url: `http://localhost:${PORTA}/jogo/`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
