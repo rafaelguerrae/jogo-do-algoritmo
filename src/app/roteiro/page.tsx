@@ -14,13 +14,27 @@ export default function Roteiro() {
 
   return (
     <main className="roteiro">
-      <h1 className="cond" style={{ fontSize: 72 }}>Roteiro <span className="laranja">da apresentação</span></h1>
+      <h1 className="cond" style={{ fontSize: 72 }}>
+        Roteiro <span className="laranja">da apresentação</span>
+      </h1>
       <p className="rotulo">Cerca de 5 minutos por visitante · uma pessoa opera, outra fala</p>
 
       <div className="painel" style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
-        <span className="cond laranja" style={{ fontSize: 56 }}>{mm}</span>
-        <button className="btn pequeno" onClick={() => setRodando(!rodando)}>{rodando ? "Pausar" : "Iniciar cronômetro"}</button>
-        <button className="btn pequeno claro" onClick={() => { setSeg(0); setRodando(false); }}>Zerar</button>
+        <span className="cond laranja" style={{ fontSize: 56 }}>
+          {mm}
+        </span>
+        <button className="btn pequeno" onClick={() => setRodando(!rodando)}>
+          {rodando ? "Pausar" : "Iniciar cronômetro"}
+        </button>
+        <button
+          className="btn pequeno claro"
+          onClick={() => {
+            setSeg(0);
+            setRodando(false);
+          }}
+        >
+          Zerar
+        </button>
       </div>
 
       <div className="bloco">
@@ -40,13 +54,21 @@ export default function Roteiro() {
       <div className="bloco">
         <h3>Perguntas que podem aparecer</h3>
         {PERGUNTAS.map((q) => (
-          <p key={q.p} style={{ margin: "0 0 12px" }}><b>{q.p}</b><br />{q.r}</p>
+          <p key={q.p} style={{ margin: "0 0 12px" }}>
+            <b>{q.p}</b>
+            <br />
+            {q.r}
+          </p>
         ))}
       </div>
 
       <div className="bloco">
         <h3>Dicas para o grupo</h3>
-        <ul className="lista">{DICAS.map((d) => <li key={d}>{d}</li>)}</ul>
+        <ul className="lista">
+          {DICAS.map((d) => (
+            <li key={d}>{d}</li>
+          ))}
+        </ul>
       </div>
     </main>
   );

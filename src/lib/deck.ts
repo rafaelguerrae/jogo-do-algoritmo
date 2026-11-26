@@ -16,8 +16,15 @@ export const TEMPO_COMPLEXA_S = 9;
 export const TEMPO_SIMPLES_S = 20;
 
 const c = (
-  id: number, origem: string, destino: string, kmColeta: number, kmEntrega: number,
-  valor: number, complexa: boolean, obs?: string, risco = false,
+  id: number,
+  origem: string,
+  destino: string,
+  kmColeta: number,
+  kmEntrega: number,
+  valor: number,
+  complexa: boolean,
+  obs?: string,
+  risco = false,
 ): Corrida => ({ id, origem, destino, kmColeta, kmEntrega, valor, complexa, obs, risco });
 
 /** Baralho fictício. Locais genéricos da região, valores inventados para o jogo. */
@@ -48,7 +55,11 @@ export const BARALHO: Corrida[] = [
   c(24, "Sorveteria", "Vila Alpina", 0.7, 2.0, 5.4, false),
 ];
 
-export const porId = (id: number) => BARALHO.find((x) => x.id === id)!;
+export const porId = (id: number): Corrida => {
+  const corrida = BARALHO.find((x) => x.id === id);
+  if (!corrida) throw new Error(`Corrida inexistente: ${id}`);
+  return corrida;
+};
 export const limiteMs = (x: Corrida) => (x.complexa ? TEMPO_COMPLEXA_S : TEMPO_SIMPLES_S) * 1000;
 export const brl = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 export const km = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });

@@ -16,22 +16,63 @@ export const useAgora = (ativo: boolean) => {
 export const restanteMs = (c: NonNullable<Estado["corridaAtual"]>, agora: number) => Math.max(0, c.inicio + c.limite - agora);
 export const fmt = (ms: number) => `00:${String(Math.ceil(ms / 1000)).padStart(2, "0")}`;
 
-export default function CartaCorrida({ corrida, agora }: { corrida: NonNullable<Estado["corridaAtual"]>; agora: number }) {
+export type Decisoes = { aceitar: () => void; recusarSeguranca: () => void; recusar: () => void };
+
+/** Com `decisoes`, os botões da carta funcionam (modo digital). Sem elas, a carta é só ilustração. */
+export default function CartaCorrida({
+  corrida,
+  agora,
+  decisoes,
+}: {
+  corrida: NonNullable<Estado["corridaAtual"]>;
+  agora: number;
+  decisoes?: Decisoes;
+}) {
   const c = porId(corrida.id);
   const resta = restanteMs(corrida, agora);
   return (
     <div className="pilha">
       <div className="ticket">
-        <div className="h"><span>CORRIDA Nº {String(c.id).padStart(4, "0")}</span><span>ENTREGA</span></div>
+        <div className="h">
+          <span>CORRIDA Nº {String(c.id).padStart(4, "0")}</span>
+          <span>ENTREGA</span>
+        </div>
         <div className="row">
-          <b>Coleta:</b> {c.origem} · {km(c.kmColeta)} km<br />
-          <b>Destino:</b> {c.destino} · {km(c.kmEntrega)} km<br />
+          <b>Coleta:</b> {c.origem} · {km(c.kmColeta)} km
+          <br />
+          <b>Destino:</b> {c.destino} · {km(c.kmEntrega)} km
+          <br />
           <b>Valor:</b> R$ {brl(c.valor)}
         </div>
         {c.obs && <div className="obs">{c.obs}</div>}
-        <div className="tw"><div className="lab">ACEITE<br />EM</div><div className={`t ${resta === 0 ? "fim" : ""}`}>{fmt(resta)}</div></div>
-        <div className="aceitar">ACEITAR</div>
-        <div className="recusar">recusar</div>
+        <div className="tw">
+          <div className="lab">
+            ACEITE
+            <br />
+            EM
+          </div>
+          <div className={`t ${resta === 0 ? "fim" : ""}`}>{fmt(resta)}</div>
+        </div>
+        {decisoes ? (
+          <>
+            <button className="aceitar" onClick={decisoes.aceitar}>
+              ACEITAR <kbd>A</kbd>
+            </button>
+            <div className="recusas">
+              <button className="recusa" onClick={decisoes.recusar}>
+                recusar <kbd>R</kbd>
+              </button>
+              <button className="recusa risco" onClick={decisoes.recusarSeguranca}>
+                recusar por segurança <kbd>S</kbd>
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="aceitar">ACEITAR</div>
+            <div className="recusar">recusar</div>
+          </>
+        )}
       </div>
     </div>
   );
