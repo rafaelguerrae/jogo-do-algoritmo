@@ -1,0 +1,23 @@
+name: Melhoria
+description: Ideia para o jogo, a apresentação, o roteiro ou o banner.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: Que problema isso resolve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposta
+    attributes:
+      label: Proposta
+    validations:
+      required: true
+  - type: checkboxes
+    id: regra-de-ouro
+    attributes:
+      label: Regra de ouro
+      options:
+        - label: Não apresenta pontos ou nota como medida de fadiga ou carga mental humana.
+          required: true

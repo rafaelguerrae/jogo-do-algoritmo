@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Tipos (tsc)
+        run: npm run typecheck
+      - name: Lint e formatação (Biome)
+        run: npm run lint
+      - name: Testes unitários com cobertura
+        run: npm run test:coverage
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Build estático
+        run: npm run build
+      - name: Confere o export estático
+        run: |
+          for p in index apresentacao/index jogo/index tela/index resultados/index baralho/index banner/index roteiro/index; do
+            test -f "out/$p.html" || { echo "faltando out/$p.html"; exit 1; }
+          done
+          test -f out/banner/Banner_Jogo_do_Algoritmo_90x120cm.pdf || { echo "faltando o PDF do banner"; exit 1; }
+      - name: Auditoria de dependências
+        run: npm audit --audit-level=high
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-estatico
+          path: out
+          retention-days: 7
+
+  e2e:
+    name: e2e
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-estatico
+          path: out
+      - name: Instala o Chromium do Playwright
+        run: npx playwright install --with-deps chromium
+      - name: Testes de ponta a ponta
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: relatorio-playwright
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
+
+  banner:
+    name: banner
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Gera o banner 90 x 120 cm
+        run: npm run banner:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: banner-90x120cm
+          path: |
+            public/banner/Banner_Jogo_do_Algoritmo_90x120cm.pdf
+            public/banner/Banner_Jogo_do_Algoritmo_previa.png
+          retention-days: 30

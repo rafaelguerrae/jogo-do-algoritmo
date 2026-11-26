@@ -1,0 +1,10 @@
+# Quem revisa o quê. Toda mudança precisa de revisão de quem é dono do caminho.
+*                    @anderson-starcenter
+
+# Regras do jogo e textos que carregam a "regra de ouro" (pontos fictícios, sem coleta primária)
+/src/lib/game.ts     @anderson-starcenter
+/src/lib/conteudo.ts @anderson-starcenter
+/src/lib/roteiro.ts  @anderson-starcenter
+
+# Segurança e automação
+/.github/            @anderson-starcenter
