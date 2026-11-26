@@ -48,7 +48,7 @@ Node 22.12+ (`.nvmrc`). O lint é Biome (e não ESLint) porque typescript-eslint
 - `src/lib/deck.ts`: baralho (dados fictícios) · `game.ts`: regras e estado · `metricas.ts`: agregados das rodadas · `store.ts`: persistência e sincronização · `roteiro.ts`: textos do roteiro · `conteudo.ts`: fontes, mecanismos e grupo (página `/` e apresentação)
 - `public/banner/`: fonte HTML do banner 90 × 120 cm, fontes e PDF/PNG gerados (ver `banner/LEIA-ME.md`)
 - `tests/unit` (Vitest) e `tests/e2e` (Playwright)
-- `.github/`: CI (`ci.yml`: quality, build, e2e, banner), CodeQL, Dependabot, CODEOWNERS, templates
+- `.github/`: CI (`ci.yml`: quality, build, e2e, banner), Dependabot, CODEOWNERS, templates
 - `docs/ROTEIRO.md`: roteiro gerado
 
 ## Regras do jogo (`src/lib/game.ts`)

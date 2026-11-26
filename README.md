@@ -45,7 +45,7 @@ npm run test:e2e     # Playwright: jogo nos dois modos, apresentação, banner, 
 npm run test:coverage
 ```
 
-O CI (`.github/workflows/ci.yml`) roda `quality`, `build`, `e2e` e `banner` em todo PR; há ainda CodeQL e Dependabot. Veja `CONTRIBUTING.md` e `SECURITY.md`.
+O CI (`.github/workflows/ci.yml`) roda `quality`, `build`, `e2e` e `banner` em todo PR; há ainda o Dependabot. Veja `CONTRIBUTING.md` e `SECURITY.md`.
 
 ## Banner
 
