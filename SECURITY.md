@@ -17,7 +17,7 @@ Só a `main`.
 
 - Ruleset na `main`: PR obrigatório, check de CI obrigatório, histórico linear, sem force push nem exclusão.
 - Secret scanning com bloqueio de push, alertas e atualizações de segurança do Dependabot.
-- CodeQL (`security-extended`), revisão de dependências em PRs e `npm audit` no CI.
+- CodeQL (`security-extended`) e `npm audit` no CI (a revisão de dependências do GitHub não é suportada neste repositório).
 - Workflows com permissões mínimas (`contents: read`) e sem credenciais persistidas no checkout.
 
 ## Dados pessoais
