@@ -32,7 +32,7 @@ Na primeira vez dos testes e2e: `npx playwright install chromium`.
 
 1. Branch a partir da `main` (ex.: `feat/modo-digital`, `fix/contagem-corridas`).
 2. Commits pequenos, mensagem no imperativo e em português ("Corrige contagem de corridas resolvidas").
-3. PR para a `main`. O check `build` (e os demais do CI) precisa passar e as conversas precisam estar resolvidas. Merge por _squash_ ou _rebase_ (histórico linear).
+3. PR para a `main`. O check `build` (e os demais do CI) precisa passar e as conversas precisam estar resolvidas (por convenção, enquanto o ruleset não for aplicado). Merge por _squash_ ou _rebase_ (histórico linear).
 4. Mudou regra, texto ou comportamento? Atualize o teste e a documentação junto.
 
 ## Regra de ouro
