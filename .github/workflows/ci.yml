@@ -58,7 +58,7 @@ jobs:
           test -f out/banner/Banner_Jogo_do_Algoritmo_90x120cm.pdf || { echo "faltando o PDF do banner"; exit 1; }
       - name: Auditoria de dependências
         run: pnpm audit --audit-level high
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: site-estatico
           path: out
@@ -87,7 +87,7 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Testes de ponta a ponta
         run: pnpm test:e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: relatorio-playwright
@@ -113,7 +113,7 @@ jobs:
       - run: pnpm exec playwright install --with-deps chromium
       - name: Gera o banner 90 x 120 cm
         run: pnpm banner:build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: banner-90x120cm
           path: |
