@@ -6,7 +6,7 @@ export default function Projeto() {
     <main className="slides">
       <section className="slide" id="inicio">
         <div className="rotulo">I Mostra de Ergonomia · UFABC · ESGE006-23 · 01/12/2026</div>
-        <h1 className="cond" style={{ fontSize: "clamp(72px,14vw,220px)" }}>
+        <h1 className="cond" style={{ fontSize: "clamp(min(72px,18vw),14vw,220px)" }}>
           Jogo do
           <br />
           <span className="laranja">Algoritmo</span>
@@ -17,9 +17,6 @@ export default function Projeto() {
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
           <Link className="btn" href="/jogo">
             Jogar agora
-          </Link>
-          <Link className="btn claro" href="/roteiro">
-            Roteiro
           </Link>
         </div>
         <p className="nota-rodape">

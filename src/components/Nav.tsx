@@ -2,15 +2,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+/** /apresentacao, /roteiro e /banner ficam fora do menu de propósito: acesso só pelo endereço. */
 const LINKS = [
   ["/", "Projeto"],
-  ["/apresentacao", "Apresentação"],
   ["/jogo", "Jogo"],
-  ["/tela", "Tela do visitante"],
   ["/resultados", "Resultados"],
   ["/baralho", "Baralho"],
-  ["/banner", "Banner"],
-  ["/roteiro", "Roteiro"],
 ] as const;
 
 /** Telas cheias, sem navegação: a do visitante e a apresentação. */
@@ -22,11 +19,16 @@ export default function Nav() {
   return (
     <nav className="topo semprint" aria-label="Principal">
       <span className="marca">JOGO DO ALGORITMO</span>
-      {LINKS.map(([href, nome]) => (
-        <Link key={href} href={href} aria-current={p === href ? "page" : undefined}>
-          {nome}
-        </Link>
-      ))}
+      <div className="topo-links">
+        {LINKS.map(([href, nome]) => (
+          <Link key={href} href={href} aria-current={p === href ? "page" : undefined}>
+            {nome}
+          </Link>
+        ))}
+      </div>
+      <Link className="topo-visitante" href="/tela">
+        Visitante
+      </Link>
     </nav>
   );
 }

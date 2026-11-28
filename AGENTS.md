@@ -38,6 +38,7 @@ Node 22.12+ (`.nvmrc`). O lint é Biome (e não ESLint) porque typescript-eslint
 ## Estrutura
 
 - `src/app/page.tsx`: página institucional em seções
+- `src/components/Nav.tsx`: menu (Projeto, Jogo, Resultados, Baralho e botão Visitante). `/apresentacao`, `/roteiro` e `/banner` ficam fora do menu de propósito: acesso só pelo endereço, não relinkar
 - `src/app/apresentacao`: slides 1600x900 escalados para a janela (setas, F, N, ?, `#n`); conteúdo em `src/components/apresentacao/slides.tsx`
 - `src/app/jogo`: painel do operador; escolhe o modo (cartas ou digital). Atalhos N, A, S, R, P só no modo cartas
 - `src/app/tela`: tela do visitante (sem navegação), sincroniza com `/jogo`. No modo digital é onde se joga e é ela quem conduz o relógio

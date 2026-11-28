@@ -14,16 +14,37 @@ for (const rota of ROTAS) {
   });
 }
 
-test("a navegação principal liga todas as abas, menos nas telas cheias", async ({ page }) => {
+test("a navegação principal liga as abas do menu e some nas telas cheias", async ({ page }) => {
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Principal" });
-  for (const nome of ["Projeto", "Apresentação", "Jogo", "Tela do visitante", "Resultados", "Baralho", "Banner", "Roteiro"]) {
+  for (const nome of ["Projeto", "Jogo", "Resultados", "Baralho", "Visitante"]) {
     await expect(nav.getByRole("link", { name: nome })).toBeVisible();
+  }
+  // acesso só pelo endereço
+  for (const nome of ["Apresentação", "Roteiro", "Banner"]) {
+    await expect(page.getByRole("link", { name: nome })).toHaveCount(0);
   }
   await page.goto("/tela/");
   await expect(page.getByRole("navigation", { name: "Principal" })).toHaveCount(0);
   await page.goto("/apresentacao/");
   await expect(page.getByRole("navigation", { name: "Principal" })).toHaveCount(0);
+});
+
+test("o menu cabe em tela de celular, com alvos de toque de 44 px", async ({ page }) => {
+  for (const largura of [320, 375, 430]) {
+    await page.setViewportSize({ width: largura, height: 700 });
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Principal" });
+    for (const link of await nav.getByRole("link").all()) {
+      const caixa = await link.boundingBox();
+      expect(caixa?.height).toBeGreaterThanOrEqual(44);
+      expect(caixa?.width).toBeGreaterThanOrEqual(44);
+      expect((caixa?.x ?? 0) + (caixa?.width ?? 0)).toBeLessThanOrEqual(largura);
+    }
+    // o botão Visitante encosta na borda direita
+    const botao = await nav.getByRole("link", { name: "Visitante" }).boundingBox();
+    expect((botao?.x ?? 0) + (botao?.width ?? 0)).toBeCloseTo(largura, 0);
+  }
 });
 
 test("os avisos de que os pontos são fictícios aparecem na tela do visitante", async ({ page }) => {
