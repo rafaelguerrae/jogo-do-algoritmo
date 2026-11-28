@@ -5,6 +5,7 @@ import CartaCorrida, { restanteMs, useAgora } from "@/components/CartaCorrida";
 import Medidor from "@/components/Medidor";
 import Percepcao from "@/components/Percepcao";
 import Resumo from "@/components/Resumo";
+import { AVISO_FICTICIO } from "@/lib/conteudo";
 import { BARALHO, porId } from "@/lib/deck";
 import {
   alternarAplicado,
@@ -74,6 +75,9 @@ export default function Jogo() {
   return (
     <main className="operador">
       <div className="col">
+        <p className="alerta" role="note">
+          {AVISO_FICTICIO}
+        </p>
         {e.status === "espera" && (
           <div className="painel">
             <h2>Nova rodada</h2>

@@ -22,7 +22,7 @@ test.describe("modo com cartas", () => {
     await page.getByLabel("ou carta nº").fill("4");
     await page.getByRole("button", { name: "Usar carta" }).click();
     await page.keyboard.press("a");
-    await expect(page.getByText(/Corrida 4 aceita em .* s, sem tempo para analisar/).first()).toBeVisible();
+    await expect(page.getByText(/Corrida 4 aceita em .* s, com pouco tempo para decidir/).first()).toBeVisible();
 
     // corrida 17 (risco): recusa por segurança = +3 e a nota cai
     await page.getByLabel("ou carta nº").fill("17");

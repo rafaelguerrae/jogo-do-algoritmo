@@ -59,7 +59,7 @@ describe("iniciar", () => {
 });
 
 describe("regra 1: pressão de tempo", () => {
-  it("corrida complexa aceita em menos de 10 s vale +1", () => {
+  it("corrida complexa aceita, com pouco tempo para decidir, vale +1", () => {
     const e = jogada(iniciar("", 8), COMPLEXA, 4000, "aceitar");
     expect(e.pontos).toBe(1);
     expect(somaPor(e, "tempo")).toBe(1);

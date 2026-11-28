@@ -97,7 +97,9 @@ table.tab td{border-bottom:2px solid var(--tinta);padding:6px 8px;vertical-align
 .operador{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;padding:28px 24px 60px;max-width:1280px;margin:0 auto}
 .operador .col{display:flex;flex-direction:column;gap:24px}
 .acoes{display:flex;flex-wrap:wrap;gap:14px}
-@media(max-width:960px){.operador{grid-template-columns:1fr}}
+@media(max-width:960px){.operador{grid-template-columns:minmax(0,1fr)}}
+/* celular estreito: nada pode forçar a coluna além da tela */
+@media(max-width:480px){.operador{padding-inline:16px}.operador .modos{min-width:0}.operador .campo,.operador .campo input,.operador .campo select{min-width:0;max-width:100%}}
 
 /* tela do visitante */
 .tela{min-height:100vh;min-height:100dvh;background:var(--papel);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr auto;padding:0 0 28px;overflow-x:clip}
@@ -169,7 +171,29 @@ table.tab td{border-bottom:2px solid var(--tinta);padding:6px 8px;vertical-align
 .lista{list-style:none;display:flex;flex-direction:column;gap:10px;font:500 18px/1.4 Plex}
 .lista li:before{content:"→ ";color:var(--laranja);font-weight:700}
 .refs{font:500 14px/1.45 Plex;columns:2 380px;column-gap:32px}
-.refs p{margin-bottom:10px;break-inside:avoid}
+.refs p{margin-bottom:10px;break-inside:avoid;overflow-wrap:anywhere;scroll-margin-top:var(--topo)}
+/* só links de texto: sem o :not, esta regra vence a cor do .btn e o rótulo some no fundo preto */
+.slide a:not(.btn){color:inherit;text-underline-offset:3px}
+.slide .lista.duas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px 40px}
+.matriz summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;color:var(--laranja)}
+.matriz summary::before{content:"+"}
+.matriz[open] summary::before{content:"−"}
+.matriz article{display:flex;flex-direction:column;gap:10px;margin:18px 0 28px}
+.matriz h3{font-weight:800;font-size:24px;font-family:Archivo;font-stretch:80%;text-transform:uppercase}
+.matriz article p{font:500 14px/1.5 Plex;max-width:100ch}
+/* quadros de literatura e regulação */
+.quadro{width:100%;border-collapse:collapse;font:500 15px/1.45 Plex}
+.quadro th,.quadro td{text-align:left;vertical-align:top;padding:12px 18px 12px 0;border-bottom:3px solid currentColor}
+.quadro thead th{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza);border-bottom-width:4px}
+.quadro tbody th{font-weight:700;width:18%}
+@media(max-width:720px){
+  .quadro,.quadro tbody,.quadro tr,.quadro th,.quadro td{display:block}
+  .quadro thead{display:none}
+  .quadro tr{border-bottom:3px solid currentColor;padding:12px 0}
+  .quadro th,.quadro td{border:0;padding:4px 0}
+  .quadro tbody th{width:auto;color:var(--laranja);text-transform:uppercase}
+  .quadro td::before{content:attr(data-label);display:block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza)}
+}
 .nota-rodape{font:500 14px/1.4 Plex;color:var(--cinza);max-width:80ch}
 .slide.escuro .nota-rodape{color:#b9b19b}
 
@@ -231,7 +255,7 @@ table.tab td{border-bottom:2px solid var(--tinta);padding:6px 8px;vertical-align
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 
 /* seletor de modo e avisos do operador */
-.modos{border:0;margin:0 0 20px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.modos{border:0;margin:0 0 20px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
 .modos legend{padding:0;margin-bottom:8px}
 .modo{position:relative;display:grid;gap:4px;border:4px solid var(--tinta);background:var(--ticket);padding:12px 14px;cursor:pointer;font-family:Archivo;font-size:16px}
 .modo b{font-size:20px;font-stretch:75%;text-transform:uppercase;letter-spacing:.06em}
@@ -271,8 +295,25 @@ table.tab td{border-bottom:2px solid var(--tinta);padding:6px 8px;vertical-align
 .ap-lista{list-style:none;display:flex;flex-direction:column;gap:16px;font-family:Plex,monospace;font-weight:500;font-size:24px;line-height:1.4}
 .ap-lista li::before{content:"→ ";color:var(--laranja);font-weight:700}
 .ap-lista.ap-grande{font-size:32px;gap:22px}
-.ap-refs{columns:2 560px;column-gap:48px;font-family:Plex,monospace;font-weight:500;font-size:17px;line-height:1.4;padding-left:26px}
-.ap-refs li{margin-bottom:12px;break-inside:avoid}
+.ap-refs{columns:2 560px;column-gap:48px;font-family:Plex,monospace;font-weight:500;font-size:13px;line-height:1.3;padding-left:26px}
+.ap-refs li{margin-bottom:9px;break-inside:avoid;overflow-wrap:anywhere}
+/* slide com muito texto; só no palco, para não afetar a versão em texto */
+.ap-slide h2.ap-h2-largo{font-size:84px;max-width:none}
+.ap-slide .ap-lista.ap-densa{font-size:20px;gap:12px}
+.ap-slide .ap-aviso.ap-densa,.ap-slide .ap-peq.ap-densa{font-size:18px;max-width:none}
+.ap-slide .ap-tab.ap-densa{font-size:18px}
+.ap-slide .ap-lead.ap-densa{font-size:30px;max-width:none}
+/* versão em texto dos slides, em fluxo normal */
+.ap-texto{max-width:900px;margin:0 auto;padding:32px 24px 80px;display:flex;flex-direction:column;gap:28px}
+.ap-texto section{display:flex;flex-direction:column;gap:16px;border:4px solid var(--tinta);background:var(--ticket);padding:20px;min-width:0}
+.ap-texto .ap-rotulo{font-size:13px}
+.ap-texto h2,.ap-texto .ap-capa{font-size:clamp(32px,8vw,56px)}
+.ap-texto h3{font-size:20px}
+.ap-texto .ap-lead,.ap-texto .ap-lista,.ap-texto .ap-lista.ap-grande,.ap-texto .ap-peq,.ap-texto .ap-aviso,.ap-texto .ap-tab,.ap-texto .ap-tab th,.ap-texto .ap-destaque span{font-size:15px}
+.ap-texto .ap-cols,.ap-texto .ap-grade{grid-template-columns:minmax(0,1fr)}
+.ap-texto .ap-refs{columns:1}
+.ap-texto .ap-destaque b,.ap-texto .ap-n{font-size:56px}
+.ap-texto .ap-tab td,.ap-texto .ap-tab th{overflow-wrap:anywhere;padding-right:8px}
 .ap-tab{width:100%;border-collapse:collapse;font-family:Plex,monospace;font-size:21px;line-height:1.35}
 .ap-tab th{text-align:left;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:17px;color:var(--cinza);padding:0 16px 10px 0;border-bottom:4px solid currentColor}
 .ap-tab td{padding:14px 16px 14px 0;border-bottom:3px solid currentColor;vertical-align:top}

@@ -5,6 +5,7 @@ import CartaCorrida, { restanteMs, useAgora } from "@/components/CartaCorrida";
 import Medidor from "@/components/Medidor";
 import Percepcao from "@/components/Percepcao";
 import Resumo from "@/components/Resumo";
+import { AVISO_FICTICIO } from "@/lib/conteudo";
 import { alternarAplicado, type Decisao, decidir, deveOferecer, modoDe, pausar, pontosEfetivos, proxima, resolvidas } from "@/lib/game";
 import { definirEstado, marcarTelaViva, useEstado } from "@/lib/store";
 
@@ -74,7 +75,7 @@ export default function Tela() {
                 <span>Algoritmo</span>
               </h1>
               <p className="fala">
-                Você tem <u>9 segundos</u> para aceitar a corrida.
+                Pouco tempo para decidir: <u>9 segundos</u> para aceitar a corrida.
               </p>
               <div className="aviso">Sente-se. O algoritmo vai começar a mandar corridas.</div>
             </>
@@ -137,10 +138,7 @@ export default function Tela() {
         </div>
       </div>
 
-      <div className="rodape">
-        Pontos de sobrecarga e nota são fictícios: recurso didático, sem equivalência com medição de fadiga ou carga mental humana.
-        Participação voluntária; pode parar quando quiser.
-      </div>
+      <div className="rodape">{AVISO_FICTICIO} Participação voluntária; pode parar quando quiser.</div>
     </div>
   );
 }

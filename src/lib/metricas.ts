@@ -11,6 +11,8 @@ export type Metricas = {
   pontosMedia: number;
   percepcaoMedia: number | null;
   percepcaoRespostas: number;
+  /** Quantas respostas houve para cada nota de pressão percebida, de 1 a 5. */
+  percepcaoDistribuicao: number[];
   rodadasComRecusaSeguranca: number;
   porMecanismo: Record<Fonte, number>;
   tempoMedioDecisaoS: number | null;
@@ -30,6 +32,7 @@ export function metricas(sessoes: Estado[]): Metricas {
     pontosMedia: media(sessoes.map((s) => s.pontos)),
     percepcaoMedia: percs.length ? media(percs) : null,
     percepcaoRespostas: percs.length,
+    percepcaoDistribuicao: [1, 2, 3, 4, 5].map((n) => percs.filter((x) => x === n).length),
     rodadasComRecusaSeguranca: sessoes.filter((s) => somaPor(s, "opacidade") > 0).length,
     porMecanismo: {
       tempo: sessoes.reduce((s, x) => s + somaPor(x, "tempo"), 0),

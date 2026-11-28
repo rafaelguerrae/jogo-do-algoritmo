@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!public", "!docs/ROTEIRO.md", "!pnpm-lock.yaml", ".github/**"]
+    "includes": ["**", "!public", "!docs/ROTEIRO.md", "!docs/resumo-para-artigo.md", "!pnpm-lock.yaml", ".github/**"]
   },
   "formatter": {
     "enabled": true,

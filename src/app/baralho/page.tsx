@@ -54,7 +54,8 @@ export default function Baralho() {
           de verso seguem a ordem espelhada, para impressão frente e verso (virar pela borda longa). Corte nas linhas tracejadas.
         </p>
         <p className="rotulo" style={{ marginBottom: 16 }}>
-          Cartas com 9 s são “complexas” (regra 1). Cartas com observação de risco permitem recusar por segurança (regra 3).
+          Cartas “complexas” dão pouco tempo para decidir ({TEMPO_COMPLEXA_S} s no jogo, regra 1). Cartas com observação de risco permitem
+          recusar por segurança (regra 3).
         </p>
         <button className="btn" onClick={() => window.print()}>
           Imprimir

@@ -13,7 +13,7 @@ Este repositório é o site do **Jogo do Algoritmo**, que substitui a planilha d
 ## Regra de ouro (feedback da professora)
 
 Os pontos de sobrecarga e a nota do app são **fictícios**, um recurso didático **sem equivalência com medição humana**. Nunca apresentar como medida de fadiga ou carga mental. A "pressão percebida 1–5" é opinião do visitante, não medida científica. Manter os avisos na tela, na tela do visitante e na página institucional.
-O estudo é revisão integrativa + análise documental, **sem coleta primária**. O NASA-TLX é só referência de dimensões da carga na literatura. Não afirmar que PLP 152/2025 ou a diretiva europeia tratam "exclusivamente" de proteção contratual (a comparação documental ainda é do artigo).
+O estudo é revisão integrativa + análise documental, **sem coleta primária**. O NASA-TLX é só referência de dimensões da carga na literatura. A Diretiva (UE) 2024/2831 tem capítulo de gestão algorítmica (arts. 7º a 15): não dizer que trata só de vínculo ou contrato. O substitutivo do PLP 152/2025 (07/04/2026) também trata de transparência (arts. 12 e 13), recusa sem penalidade (arts. 4º e 12) e procedimento antes de sanções (arts. 17 e 18); não fixa prazo de decisão nem limite de corridas seguidas. É texto em tramitação. Conteúdo institucional e referências ficam em `src/lib/conteudo.ts`; nada entra sem ter sido lido na fonte (usar `[PENDENTE: ...]`). `docs/resumo-para-artigo.md` é gerado (`pnpm resumo:gerar`).
 
 ## Stack e comandos
 
@@ -31,6 +31,7 @@ pnpm test:e2e      # Playwright (tests/e2e); 1ª vez: pnpm exec playwright insta
 pnpm check         # typecheck + lint + testes + build
 pnpm banner:build  # PDF 900x1200 mm + PNG em public/banner/
 pnpm roteiro:gerar # regenera docs/ROTEIRO.md a partir de src/lib/roteiro.ts
+pnpm resumo:gerar  # regenera docs/resumo-para-artigo.md a partir de src/lib/conteudo.ts e game.ts
 ```
 Node 22.12+ (`.nvmrc`). O lint é Biome (e não ESLint) porque typescript-eslint ainda não suporta TypeScript 7.
 `NEXT_PUBLIC_BASE_PATH=/repo pnpm build` para GitHub Pages. Use sempre `next/link` (não `<a href="/...">`), por causa do basePath.
@@ -38,7 +39,7 @@ Node 22.12+ (`.nvmrc`). O lint é Biome (e não ESLint) porque typescript-eslint
 ## Estrutura
 
 - `src/app/page.tsx`: página institucional em seções
-- `src/components/Nav.tsx`: menu (Projeto, Jogo, Resultados, Baralho e botão Visitante). `/apresentacao`, `/roteiro` e `/banner` ficam fora do menu de propósito: acesso só pelo endereço, não relinkar
+- `src/components/Nav.tsx`: menu (Projeto, Jogo, Resultados e botão Visitante). `/apresentacao`, `/roteiro` e `/banner` ficam fora do menu de propósito: acesso só pelo endereço, não relinkar. `/baralho` também saiu do menu, mas a home ainda tem o botão "Baralho para imprimir"
 - `src/app/apresentacao`: slides 1600x900 escalados para a janela (setas, F, N, ?, `#n`); conteúdo em `src/components/apresentacao/slides.tsx`
 - `src/app/jogo`: painel do operador; escolhe o modo (cartas ou digital). Atalhos N, A, S, R, P só no modo cartas
 - `src/app/tela`: tela do visitante (sem o menu; só o botão Projeto, que volta para `/`), sincroniza com `/jogo`. No modo digital é onde se joga e é ela quem conduz o relógio
@@ -54,7 +55,7 @@ Node 22.12+ (`.nvmrc`). O lint é Biome (e não ESLint) porque typescript-eslint
 
 ## Regras do jogo (`src/lib/game.ts`)
 
-- Corrida complexa (limite 9 s) aceita em menos de 10 s: **+1** (`tempo`). Corridas simples têm 20 s e não pontuam.
+- Aceitar corrida complexa, com pouco tempo para decidir (limite 9 s): **+1** (`tempo`). Corridas simples têm 20 s e não pontuam. Na interface, falar em "pouco tempo para decidir"; o `< 10000` do código não filtra nada (o limite já é 9 s). Os 9 s são escolha de projeto, não da literatura.
 - A cada 3 corridas aceitas seguidas sem pausa: **+2** (`encadeadas`).
 - Recusa por segurança com queda de nota sem explicação: **+3** (`opacidade`); a nota cai 0,15.
 - Pausa de 5 min (simulada) zera a sequência. Tempo esgotado e recusa por outro motivo não pontuam.
@@ -79,6 +80,6 @@ Estado único em `localStorage` (`jda:estado`, `jda:sessoes`). Sincronização p
 
 - Ficha de recursos da Mostra (docx) já enviada pelo grupo; falta e-mail institucional do representante e confirmar número do grupo, presença do Miguel Carlos Pereira e quantidades de recursos.
 - Banner 90 × 120 cm (PDF) com a gráfica: confirmar formato, sangria e prova de cor (arquivo em RGB).
-- Artigo final (template Revista Ação Ergonômica, 8–12 páginas) entrega em 03/12. Feedback pendente de resolver no texto: definir dimensões da matriz de extração; sequência mecanismo → exigência → evidência → melhoria por requisito; papel do NASA-TLX sem coleta primária; algoritmo como parte do sistema de trabalho (trânsito, veículo, ambiente, relações organizacionais); completar referências; comparar o conteúdo dos documentos regulatórios; conferir a data de entrega.
+- Artigo final (template Revista Ação Ergonômica, 8–12 páginas) entrega em 03/12. No site já estão as oito dimensões da matriz (`MATRIZ`) e o papel do NASA-TLX (`NASA_TLX`); a matriz preenchida está em `src/lib/matriz.ts` (e `docs/matriz-de-extracao.csv`), conferida nas fontes e aprovada pelo grupo em 28/11/2026 (`docs/conferencia-da-matriz.md`). Os objetivos (`OBJETIVO_GERAL`, `OBJETIVOS_ESPECIFICOS`) são os da Entrega Parcial; o específico 2 foi reescrito (era "regulação puramente trabalhista", que a comparação não sustenta); o artigo precisa usar a redação nova. Nunca colocar no repositório os números de matrícula dos integrantes. Também estão o quadro mecanismo → exigência → evidência → melhoria (`SEQUENCIA`) e o sistema de trabalho (`SISTEMA`, com evidências de Oliveira & Junges 2023 e Rodrigues et al. 2021). Feedback pendente de resolver no texto: definir dimensões da matriz de extração; sequência mecanismo → exigência → evidência → melhoria por requisito; papel do NASA-TLX sem coleta primária; algoritmo como parte do sistema de trabalho (trânsito, veículo, ambiente, relações organizacionais); completar referências; comparar o conteúdo dos documentos regulatórios; conferir a data de entrega.
 - Conferir os textos dos slides de Definições e Limites com as referências do artigo (são definições de trabalho do grupo). A evidência por mecanismo na matriz mecanismo → requisito depende da matriz de extração do artigo.
 - Possíveis melhorias do site: QR code para o site na página do banner, modo escuro para a tela.

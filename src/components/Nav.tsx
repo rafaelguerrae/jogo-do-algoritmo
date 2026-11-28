@@ -2,12 +2,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-/** /apresentacao, /roteiro e /banner ficam fora do menu de propósito: acesso só pelo endereço. */
+/** /apresentacao, /roteiro, /banner e /baralho ficam fora do menu de propósito: acesso só pelo endereço. */
 const LINKS = [
   ["/", "Projeto"],
   ["/jogo", "Jogo"],
   ["/resultados", "Resultados"],
-  ["/baralho", "Baralho"],
 ] as const;
 
 /** Telas cheias, sem o menu: a do visitante (só volta ao projeto) e a apresentação. */

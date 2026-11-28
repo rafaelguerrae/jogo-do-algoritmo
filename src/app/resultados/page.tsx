@@ -1,5 +1,6 @@
 "use client";
 import { useMemo, useRef } from "react";
+import { AVISO_AMOSTRA, AVISO_FICTICIO } from "@/lib/conteudo";
 import { modoDe, resolvidas, sessaoParaCsv, somaPor, tempoMedioDecisaoS } from "@/lib/game";
 import { f1, MECANISMOS, metricas } from "@/lib/metricas";
 import { limparSessoes, useSessoes } from "@/lib/store";
@@ -21,8 +22,11 @@ export default function Resultados() {
     URL.revokeObjectURL(a.href);
   };
 
+  const maisPesaram = [...MECANISMOS].sort((a, b) => m.porMecanismo[b] - m.porMecanismo[a]);
+
   const cartoes: [string, string][] = [
-    ["Rodadas jogadas", String(m.rodadas)],
+    ["Rodadas registradas (n)", String(m.rodadas)],
+    ["Respostas de pressão percebida (n)", String(m.percepcaoRespostas)],
     ["Pontos por rodada (média)", f1(m.pontosMedia)],
     ["Pressão percebida 1–5 (média)", m.percepcaoMedia !== null ? f1(m.percepcaoMedia) : "–"],
     ["Rodadas com recusa por segurança", String(m.rodadasComRecusaSeguranca)],
@@ -35,49 +39,80 @@ export default function Resultados() {
       <h1 className="cond" style={{ fontSize: "min(72px,16vw)" }}>
         Resultados <span className="laranja">da Mostra</span>
       </h1>
-      <p className="rotulo">
-        Dados guardados só neste navegador (sem servidor). Exporte antes de trocar de computador. Percepção = opinião do visitante, não
-        medida científica. Pontos são fictícios.
+      <p className="alerta" role="note">
+        {AVISO_FICTICIO} {AVISO_AMOSTRA} A nota de 1 a 5 é opinião do visitante, não medida científica.
       </p>
+      <p className="rotulo">Dados guardados só neste navegador (sem servidor). Exporte antes de trocar de computador.</p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
-        {cartoes.map(([t, v]) => (
-          <div key={t} className="painel">
-            <div className="rotulo">{t}</div>
-            <div className="cond laranja" style={{ fontSize: 64 }}>
-              {v}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="painel">
-        <h3>Pontos por mecanismo (soma de todas as rodadas)</h3>
-        <table className="tab">
-          <thead>
-            <tr>
-              <th>Mecanismo</th>
-              <th>Pontos</th>
-            </tr>
-          </thead>
-          <tbody>
-            {MECANISMOS.map((f) => (
-              <tr key={f}>
-                <td>{NOMES[f]}</td>
-                <td>{m.porMecanismo[f]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="painel">
-        <h3>Rodadas</h3>
-        {lista.length === 0 ? (
+      {lista.length === 0 ? (
+        <div className="painel">
+          <h3>Resultados em consolidação</h3>
           <p>
-            Nenhuma rodada ainda. Jogue uma em <b>Jogo</b>.
+            Ainda não há rodadas registradas neste navegador. Jogue uma em <b>Jogo</b>.
           </p>
-        ) : (
+        </div>
+      ) : (
+        <>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
+            {cartoes.map(([t, v]) => (
+              <div key={t} className="painel">
+                <div className="rotulo">{t}</div>
+                <div className="cond laranja" style={{ fontSize: 64 }}>
+                  {v}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="painel">
+            <h3>Distribuição da pressão percebida (1 a 5)</h3>
+            {m.percepcaoRespostas === 0 ? (
+              <p>Nenhuma resposta ainda.</p>
+            ) : (
+              <table className="tab">
+                <thead>
+                  <tr>
+                    <th>Nota</th>
+                    <th>Respostas</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {m.percepcaoDistribuicao.map((q, i) => (
+                    <tr key={i}>
+                      <td>{i + 1}</td>
+                      <td>{q}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          <div className="painel">
+            <h3>Mecanismos que mais pesaram (soma dos pontos fictícios)</h3>
+            <table className="tab">
+              <thead>
+                <tr>
+                  <th>Mecanismo</th>
+                  <th>Pontos</th>
+                </tr>
+              </thead>
+              <tbody>
+                {maisPesaram.map((f) => (
+                  <tr key={f}>
+                    <td>{NOMES[f]}</td>
+                    <td>{m.porMecanismo[f]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {lista.length > 0 && (
+        <div className="painel">
+          <h3>Rodadas</h3>
           <table className="tab rodadas">
             <thead>
               <tr>
@@ -115,8 +150,8 @@ export default function Resultados() {
               })}
             </tbody>
           </table>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="acoes-resultados">
         <button className="btn" disabled={!lista.length} onClick={baixar}>
