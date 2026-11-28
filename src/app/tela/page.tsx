@@ -1,9 +1,11 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import CartaCorrida, { restanteMs, useAgora } from "@/components/CartaCorrida";
 import Medidor from "@/components/Medidor";
 import Percepcao from "@/components/Percepcao";
 import Resumo from "@/components/Resumo";
+import { AVISO_FICTICIO } from "@/lib/conteudo";
 import { alternarAplicado, type Decisao, decidir, deveOferecer, modoDe, pausar, pontosEfetivos, proxima, resolvidas } from "@/lib/game";
 import { definirEstado, marcarTelaViva, useEstado } from "@/lib/store";
 
@@ -14,8 +16,12 @@ export default function Tela() {
   const eRef = useRef(e);
   eRef.current = e;
 
-  // No modo digital a tela do visitante conduz o jogo: ela controla o relógio e as ofertas.
-  const agir = (d: Decisao) => definirEstado(decidir(eRef.current, d));
+  // O visitante decide aqui nos dois modos. No modo cartas, relógio e ofertas continuam com o operador.
+  const agir = (d: Decisao) => {
+    const c = eRef.current.corridaAtual;
+    // sem tempo restante, a decisão não vale: conta como expirada
+    definirEstado(decidir(eRef.current, c && restanteMs(c, Date.now()) === 0 ? "expirar" : d));
+  };
 
   useEffect(() => {
     marcarTelaViva();
@@ -23,6 +29,7 @@ export default function Tela() {
     return () => clearInterval(i);
   }, []);
 
+  // No modo digital a tela do visitante conduz o jogo: ela controla o relógio e as ofertas.
   useEffect(() => {
     if (!digital) return;
     if (e.corridaAtual && restanteMs(e.corridaAtual, agora) === 0) agir("expirar");
@@ -32,13 +39,13 @@ export default function Tela() {
   useEffect(() => {
     const f = (ev: KeyboardEvent) => {
       const s = eRef.current;
-      if (modoDe(s) !== "digital" || s.status !== "jogando" || ev.metaKey || ev.ctrlKey) return;
+      if (s.status !== "jogando" || ev.metaKey || ev.ctrlKey) return;
       const k = ev.key.toLowerCase();
       if (s.corridaAtual) {
         if (k === "a") agir("aceitar");
         if (k === "s") agir("recusar_seguranca");
         if (k === "r") agir("recusar_outro");
-      } else if (k === "p") definirEstado(pausar(s));
+      } else if (k === "p" && modoDe(s) === "digital") definirEstado(pausar(s));
     };
     window.addEventListener("keydown", f);
     return () => window.removeEventListener("keydown", f);
@@ -53,12 +60,10 @@ export default function Tela() {
 
   return (
     <div className="tela">
-      <div className="faixa">
-        <span>I MOSTRA DE ERGONOMIA · UFABC</span>
-        <span>
-          <b>JOGO DO ALGORITMO</b> · simulação didática
-        </span>
-      </div>
+      <header className="faixa">
+        <span className="marca">JOGO DO ALGORITMO</span>
+        <Link href="/">Projeto</Link>
+      </header>
 
       <div className="miolo">
         <div className="centro">
@@ -70,7 +75,7 @@ export default function Tela() {
                 <span>Algoritmo</span>
               </h1>
               <p className="fala">
-                Você tem <u>9 segundos</u> para aceitar a corrida.
+                Pouco tempo para decidir: <u>9 segundos</u> para aceitar a corrida.
               </p>
               <div className="aviso">Sente-se. O algoritmo vai começar a mandar corridas.</div>
             </>
@@ -80,15 +85,11 @@ export default function Tela() {
             <CartaCorrida
               corrida={e.corridaAtual}
               agora={agora}
-              decisoes={
-                digital
-                  ? {
-                      aceitar: () => agir("aceitar"),
-                      recusarSeguranca: () => agir("recusar_seguranca"),
-                      recusar: () => agir("recusar_outro"),
-                    }
-                  : undefined
-              }
+              decisoes={{
+                aceitar: () => agir("aceitar"),
+                recusarSeguranca: () => agir("recusar_seguranca"),
+                recusar: () => agir("recusar_outro"),
+              }}
             />
           )}
 
@@ -124,7 +125,7 @@ export default function Tela() {
           )}
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 420 }}>
+        <div className="lado">
           <Medidor pontos={pontosEfetivos(e)} grande />
           {e.status !== "espera" && (
             <div className="aviso" style={{ boxShadow: opaco ? "8px 8px 0 var(--laranja)" : "8px 8px 0 var(--tinta)" }}>
@@ -137,10 +138,7 @@ export default function Tela() {
         </div>
       </div>
 
-      <div className="rodape">
-        Pontos de sobrecarga e nota são fictícios: recurso didático, sem equivalência com medição de fadiga ou carga mental humana.
-        Participação voluntária; pode parar quando quiser.
-      </div>
+      <div className="rodape">{AVISO_FICTICIO} Participação voluntária; pode parar quando quiser.</div>
     </div>
   );
 }

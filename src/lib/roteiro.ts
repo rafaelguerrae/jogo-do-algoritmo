@@ -34,13 +34,13 @@ export const ABERTURA: Bloco[] = [
   {
     tempo: "5:10 · 20 s",
     titulo: "Fechamento",
-    fala: "A lei discute vínculo, taxas e contrato, e isso é importante. A Ergonomia acrescenta outra pergunta: como o sistema precisa ser projetado para respeitar os limites da cabeça de quem trabalha com ele. Se quiser, de 1 a 5, quanta pressão você sentiu? É só a sua opinião, não é medida científica. Obrigado por jogar!",
+    fala: "As leis em discussão tratam do vínculo e já falam de transparência e de punição. A Ergonomia acrescenta outra pergunta: como o sistema precisa ser projetado para respeitar os limites da cabeça de quem trabalha com ele. Se quiser, de 1 a 5, quanta pressão você sentiu? É só a sua opinião, não é medida científica. Obrigado por jogar!",
     acao: "Operador registra a percepção. Oferecer o QR/link do projeto, se houver.",
   },
 ];
 
 export const PITCH_30S =
-  "Nosso projeto trata o algoritmo de aplicativo como posto de trabalho. Em vez de olhar só para contratos e taxas, olhamos para o projeto da interface: tempo para decidir, metas encadeadas e punições sem explicação. Fazemos uma revisão da literatura e uma análise documental, sem coleta com pessoas, e traduzimos os achados em requisitos ergonômicos. Na Mostra, o público joga uma simulação para sentir esse ritmo, com pontos fictícios que ensinam, e não medem.";
+  "Nosso projeto trata o algoritmo de aplicativo como posto de trabalho. Além das regras trabalhistas, olhamos para o projeto da interface: tempo para decidir, metas encadeadas e punições sem explicação. Fazemos uma revisão da literatura e uma análise documental, sem coleta com pessoas, e traduzimos os achados em requisitos ergonômicos. Na Mostra, o público joga uma simulação para sentir esse ritmo, com pontos fictícios que ensinam, e não medem.";
 
 export const PERGUNTAS: { p: string; r: string }[] = [
   {
@@ -53,7 +53,11 @@ export const PERGUNTAS: { p: string; r: string }[] = [
   },
   {
     p: "Por que não só criar uma lei?",
-    r: "Regras trabalhistas são necessárias, mas dizem pouco sobre como a interface é projetada. A proposta é complementar com requisitos de projeto da interação.",
+    r: "Regras jurídicas são necessárias. A diretiva europeia e o substitutivo do projeto brasileiro, o PLP 152/2025, já falam de transparência e de explicação sobre punições. Nos textos que consultamos, não localizamos prazo mínimo para aceitar uma corrida nem limite de corridas encadeadas. A proposta é complementar com requisitos de projeto da interação.",
+  },
+  {
+    p: "Por que 9 segundos?",
+    r: "É uma escolha de projeto do jogo, para o visitante sentir o pouco tempo para decidir. Não é um valor da literatura nem uma medição. A literatura relata de 10 a 40 segundos (Rani et al., 2022, p. 20).",
   },
   {
     p: "Vocês entrevistaram entregadores?",
@@ -61,7 +65,7 @@ export const PERGUNTAS: { p: string; r: string }[] = [
   },
   {
     p: "E o NASA-TLX?",
-    r: "É uma referência da literatura para as dimensões da carga de trabalho (como demanda mental e temporal, esforço e frustração). O estudo não aplica o questionário em pessoas.",
+    r: "Usamos apenas como referência conceitual para nomear as exigências que a literatura descreve, pelas seis dimensões: demanda mental, física e temporal, desempenho, esforço e frustração. Não aplicamos o questionário, não calculamos pontuação e o jogo não mede carga mental.",
   },
   {
     p: "O que é a recusa por segurança?",

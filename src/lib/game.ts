@@ -1,4 +1,4 @@
-import { BARALHO, limiteMs, porId } from "./deck";
+import { BARALHO, limiteMs, porId, TEMPO_COMPLEXA_S } from "./deck";
 
 /** Pontos de sobrecarga são FICTÍCIOS: recurso didático, sem equivalência com medição humana. */
 export const PONTOS = { tempo: 1, encadeadas: 2, opacidade: 3 } as const;
@@ -157,7 +157,7 @@ export function decidir(e: Estado, d: Decisao): Estado {
         tipo: "aceite",
         pontos: PONTOS.tempo,
         fonte: "tempo",
-        texto: `Corrida ${id} aceita em ${(tempoMs / 1000).toFixed(1)} s, sem tempo para analisar`,
+        texto: `Corrida ${id} aceita em ${(tempoMs / 1000).toFixed(1)} s, com pouco tempo para decidir`,
       });
     } else {
       evs.push({ ...base, tipo: "aceite", pontos: 0, texto: `Corrida ${id} aceita` });
@@ -177,7 +177,7 @@ export function decidir(e: Estado, d: Decisao): Estado {
       tipo: "recusa_seguranca",
       pontos: PONTOS.opacidade,
       fonte: "opacidade",
-      texto: `Corrida ${id} recusada por segurança: score caiu, sem explicação`,
+      texto: `Corrida ${id} recusada por segurança: nota caiu, sem explicação`,
     });
   } else if (d === "recusar_outro") {
     evs.push({ ...base, tipo: "recusa_outro", pontos: 0, texto: `Corrida ${id} recusada` });
@@ -230,7 +230,7 @@ export const REQUISITOS: { fonte: Fonte; titulo: string; regra: string; requisit
   {
     fonte: "tempo",
     titulo: "Pressão de tempo",
-    regra: "Menos de 10 s para decidir uma corrida complexa",
+    regra: `Aceitar corrida complexa, com pouco tempo para decidir (${TEMPO_COMPLEXA_S} s no jogo)`,
     requisito: "Tempo útil de decisão proporcional à complexidade da tarefa",
   },
   {
@@ -242,7 +242,7 @@ export const REQUISITOS: { fonte: Fonte; titulo: string; regra: string; requisit
   {
     fonte: "opacidade",
     titulo: "Opacidade e punição",
-    regra: "Recusa por segurança com queda de score sem explicação",
+    regra: "Recusa por segurança com queda de nota sem explicação",
     requisito: "Feedback explicativo antes de qualquer punição, e recusa por segurança sem penalidade",
   },
 ];

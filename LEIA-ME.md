@@ -30,7 +30,7 @@ pnpm test:coverage
 
 ## Regras do jogo (todas fictícias)
 
-- Corrida complexa (9 s) aceita antes de 10 s: **+1** ponto (pressão de tempo)
+- Aceitar corrida complexa, com pouco tempo para decidir (9 s no jogo): **+1** ponto (pressão de tempo)
 - A cada 3 corridas seguidas sem pausa de 5 min: **+2** pontos (metas encadeadas)
 - Recusa por segurança com queda de nota sem explicação: **+3** pontos (opacidade)
 - Pausa de 5 min (simulada) zera a sequência.

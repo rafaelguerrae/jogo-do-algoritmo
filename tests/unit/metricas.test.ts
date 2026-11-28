@@ -43,5 +43,6 @@ describe("metricas", () => {
     const m = metricas([rodada("cartas", 4), rodada("cartas", null), rodada("cartas", 2)]);
     expect(m.percepcaoRespostas).toBe(2);
     expect(m.percepcaoMedia).toBe(3);
+    expect(m.percepcaoDistribuicao).toEqual([0, 1, 0, 1, 0]);
   });
 });

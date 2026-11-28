@@ -18,6 +18,7 @@
     "test:e2e": "playwright test",
     "banner:build": "node scripts/build-banner.mjs",
     "roteiro:gerar": "node scripts/gerar-roteiro.mjs",
+    "resumo:gerar": "vitest run tests/unit/resumo.test.ts -u",
     "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build"
   },
   "dependencies": {

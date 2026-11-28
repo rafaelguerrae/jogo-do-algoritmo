@@ -90,6 +90,9 @@ export default function Apresentacao() {
         <Link href="/" className="ap-ctl">
           Sair
         </Link>
+        <Link href="/apresentacao/texto" className="ap-ctl">
+          Texto
+        </Link>
         <button type="button" className="ap-ctl" onClick={() => ir(i - 1)} disabled={i === 0} aria-label="Slide anterior">
           ←
         </button>

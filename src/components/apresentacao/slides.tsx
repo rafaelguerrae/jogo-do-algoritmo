@@ -1,5 +1,29 @@
 import type { ReactNode } from "react";
-import { AVISO_FICTICIO, DISCIPLINA, GRUPO, MECANISMOS, REFS } from "@/lib/conteudo";
+import { Italico } from "@/components/Citacao";
+import {
+  AVISO_AMOSTRA,
+  AVISO_FICTICIO,
+  cita,
+  DEBATE,
+  DISCIPLINA,
+  ENTREGADORES,
+  GRUPO,
+  LIMITES,
+  MATRIZ,
+  MECANISMOS,
+  METODO,
+  NASA_TLX,
+  OBJETIVO_GERAL,
+  OBJETIVOS_ESPECIFICOS,
+  OLHAR_ERGONOMIA,
+  PERGUNTA,
+  PORQUE_9S,
+  REF_IDS,
+  REFERENCIAS,
+  SEQUENCIA,
+  SISTEMA_INTRO,
+  TLX,
+} from "@/lib/conteudo";
 import { TEMPO_COMPLEXA_S, TEMPO_SIMPLES_S } from "@/lib/deck";
 import { ENCADEADAS, NOTA_INICIAL, PONTOS, QUEDA_NOTA } from "@/lib/game";
 import { f1, type Metricas } from "@/lib/metricas";
@@ -30,11 +54,12 @@ const DEFINICOES = [
   },
   {
     t: "Sistema de trabalho",
-    d: "Pessoa, tarefa, ferramentas, ambiente e organização, em conjunto. Na Ergonomia, o algoritmo é parte do sistema de trabalho: é projeto, e projeto pode ser melhorado.",
+    d: SISTEMA_INTRO,
   },
 ];
 
-const TLX = ["Demanda mental", "Demanda física", "Demanda temporal", "Desempenho", "Esforço", "Frustração"];
+/** No slide de método, o papel do NASA-TLX ganha um quadro próprio. */
+const METODO_SEM_TLX = METODO.filter((t) => t !== NASA_TLX);
 
 export function montarSlides(m: Metricas): Slide[] {
   return [
@@ -62,7 +87,7 @@ export function montarSlides(m: Metricas): Slide[] {
       id: "contexto",
       titulo: "Contexto",
       notas:
-        "Plataformas digitais substituem boa parte da gestão humana por sistemas que distribuem tarefas, monitoram e punem. Para quem entrega, o algoritmo define ritmo, carga e ambiente de decisão. O número de entregadores é o citado no projeto (IBGE/Unicamp).",
+        "Plataformas digitais substituem boa parte da gestão humana por sistemas que distribuem tarefas, monitoram e punem. Para quem entrega, o algoritmo define ritmo, carga e ambiente de decisão. O número de entregadores é do IBGE (PNAD Contínua, 4º trimestre de 2022) e é estatística experimental.",
       corpo: (
         <>
           <div className="ap-rotulo">O problema</div>
@@ -75,12 +100,13 @@ export function montarSlides(m: Metricas): Slide[] {
               regras que o sistema impõe.
             </p>
             <div className="ap-destaque">
-              <b>~589 mil</b>
-              <span>entregadores de aplicativo no Brasil, segundo dado citado no projeto (IBGE/Unicamp)</span>
+              <b>589 mil</b>
+              <span>{ENTREGADORES}</span>
             </div>
           </div>
           <p className="ap-peq">
-            Opacidade, pressão de tempo e metas dinâmicas ignoram limites cognitivos humanos e podem gerar sobrecarga mental e fadiga.
+            Opacidade, pressão de tempo e metas dinâmicas podem ignorar limites cognitivos e gerar sobrecarga mental e fadiga. A literatura
+            associa esses sistemas a pressões psicossociais e a mais estresse {cita("bowdler")}.
           </p>
         </>
       ),
@@ -106,7 +132,7 @@ export function montarSlides(m: Metricas): Slide[] {
             ))}
           </div>
           <p className="ap-peq">
-            Referência de dimensões da carga na literatura (NASA-TLX): {TLX.join(", ")}. O estudo não aplica o questionário em pessoas.
+            Referência conceitual para nomear exigências (NASA-TLX {cita("hart")}): {TLX.join(", ")}. O questionário não foi aplicado.
           </p>
         </>
       ),
@@ -119,13 +145,16 @@ export function montarSlides(m: Metricas): Slide[] {
       corpo: (
         <>
           <div className="ap-rotulo">Pergunta de pesquisa</div>
-          <h2>
+          <h2 className="ap-h2-largo">
             Lei <em>e</em> projeto da interface
           </h2>
-          <p className="ap-lead">
-            Como a gestão algorítmica afeta a carga mental dos trabalhadores por aplicativo e de que forma os requisitos ergonômicos de
-            projeto se diferenciam das regras jurídicas (trabalhistas) para mitigar esses impactos na interface humano-sistema?
-          </p>
+          <p className="ap-lead ap-densa">{PERGUNTA}</p>
+          <p className="ap-peq ap-densa">Objetivo geral: {OBJETIVO_GERAL}</p>
+          <ul className="ap-lista ap-densa">
+            {OBJETIVOS_ESPECIFICOS.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
         </>
       ),
     },
@@ -138,24 +167,20 @@ export function montarSlides(m: Metricas): Slide[] {
       corpo: (
         <>
           <div className="ap-rotulo">Método</div>
-          <h2>
+          <h2 className="ap-h2-largo">
             Revisão integrativa e <em>análise documental</em>
           </h2>
           <div className="ap-cols">
-            <ul className="ap-lista">
-              <li>Buscas em Google Acadêmico, SciELO, Periódicos CAPES, Scopus e anais da ABERGO.</li>
-              <li>Termos: “gestão algorítmica”, “carga mental”, “fadiga”, “platform work”.</li>
-              <li>Matriz de extração para organizar mecanismos de controle e efeitos.</li>
-              <li>Análise de textos normativos, comparando o conteúdo antes de concluir.</li>
-            </ul>
-            <ul className="ap-lista">
-              <li>Fundamento: relatório ALMA-AI (PEROSH), que trata a IA como nova forma de organização do trabalho.</li>
-              <li>
-                <b>Sem coleta de dados primários</b> com pessoas.
-              </li>
-              <li>Resultado: requisitos ergonômicos concretos para o design das interfaces algorítmicas.</li>
-            </ul>
+            {[METODO_SEM_TLX.slice(0, 4), METODO_SEM_TLX.slice(4)].map((parte) => (
+              <ul className="ap-lista ap-densa" key={parte[0]}>
+                {parte.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            ))}
           </div>
+          <p className="ap-aviso ap-densa">{NASA_TLX}</p>
+          <p className="ap-peq ap-densa">Dimensões da matriz: {MATRIZ.map((x) => x.dimensao.toLowerCase()).join(" · ")}.</p>
         </>
       ),
     },
@@ -163,7 +188,7 @@ export function montarSlides(m: Metricas): Slide[] {
       id: "fontes",
       titulo: "Fontes",
       notas:
-        "Mostrar a base: artigos e relatórios revisados por pares ou institucionais. A lista completa está também na página do projeto.",
+        "Mostrar a base: artigos, relatório institucional, dados do IBGE e textos normativos. De Lucca é resenha de livro e Bowdler et al. é editorial. A lista também está na página do projeto.",
       corpo: (
         <>
           <div className="ap-rotulo">Fontes</div>
@@ -171,8 +196,10 @@ export function montarSlides(m: Metricas): Slide[] {
             O que <em>sustenta</em> o trabalho
           </h2>
           <ol className="ap-refs">
-            {REFS.map((r) => (
-              <li key={r}>{r}</li>
+            {REF_IDS.map((id) => (
+              <li key={id}>
+                <Italico texto={REFERENCIAS[id].apa} /> {REFERENCIAS[id].url}
+              </li>
             ))}
           </ol>
         </>
@@ -183,36 +210,36 @@ export function montarSlides(m: Metricas): Slide[] {
       titulo: "Mecanismos e requisitos",
       escuro: true,
       notas:
-        "Percorrer a linha de cada mecanismo: o que ele pede de quem trabalha, como aparece no jogo e qual requisito de projeto o corrige. A evidência por mecanismo vem da matriz de extração do artigo, em elaboração.",
+        "Percorrer a linha de cada mecanismo: o que ele exige de quem trabalha, que evidência encontramos, o que ela não mostra e qual melhoria de projeto responde. A literatura sustenta os mecanismos, não os números do jogo.",
       corpo: (
         <>
           <div className="ap-rotulo">Três mecanismos, três requisitos</div>
-          <h2>
+          <h2 className="ap-h2-largo">
             Da regra ao <em>requisito</em>
           </h2>
-          <table className="ap-tab">
+          <table className="ap-tab ap-densa">
             <thead>
               <tr>
-                <th>Mecanismo</th>
-                <th>Exigência sobre quem trabalha</th>
-                <th>No jogo</th>
-                <th>Requisito ergonômico</th>
+                <th>Mecanismo de gestão</th>
+                <th>Exigência gerada</th>
+                <th>Evidência encontrada</th>
+                <th>Possibilidade de melhoria</th>
               </tr>
             </thead>
             <tbody>
-              {MECANISMOS.map((x) => (
-                <tr key={x.t}>
+              {SEQUENCIA.map((x) => (
+                <tr key={x.mecanismo}>
                   <td>
-                    <b>{x.t}</b>
+                    <b>{x.mecanismo}</b>
                   </td>
                   <td>{x.exigencia}</td>
-                  <td>{x.d}</td>
-                  <td>{x.r}</td>
+                  <td>{x.evidencia}</td>
+                  <td>{x.melhoria}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <p className="ap-peq">Evidências por mecanismo: matriz de extração do artigo (em elaboração).</p>
+          <p className="ap-peq ap-densa">Limites da evidência: {SEQUENCIA.map((x) => x.lacuna).join(" ")}</p>
         </>
       ),
     },
@@ -220,7 +247,7 @@ export function montarSlides(m: Metricas): Slide[] {
       id: "regulacao",
       titulo: "Lei e projeto",
       notas:
-        "Cuidado com a afirmação: o debate regulatório tem foco predominante em vínculo, remuneração e contratos. Não dizer que é exclusivo. A comparação documental completa é do artigo.",
+        "Cuidado: a diretiva europeia não trata só de vínculo; ela tem capítulo de gestão algorítmica. O substitutivo do PLP 152/2025 também trata de transparência, recusa e punição, mas é texto em tramitação. Em nenhum dos dois localizamos prazo para aceitar tarefa nem limite de corridas encadeadas.",
       corpo: (
         <>
           <div className="ap-rotulo">Dois olhares complementares</div>
@@ -230,19 +257,21 @@ export function montarSlides(m: Metricas): Slide[] {
           <div className="ap-grade ap-g2">
             <div className="ap-cartao">
               <h3>O debate regulatório</h3>
-              <p>
-                Projetos como o PLP 152/2025 e a diretiva europeia têm foco predominante em vínculo, remuneração e contratos. O artigo
-                compara o conteúdo desses documentos para ver o que dizem sobre o design da tarefa.
-              </p>
+              <p>{DEBATE}</p>
             </div>
             <div className="ap-cartao">
               <h3>O olhar da Ergonomia</h3>
-              <p>
-                Atua no design da tarefa: parâmetros operacionais pensados para o bem-estar cognitivo, como tempo útil de decisão antes de
-                punições e limites para metas encadeadas.
-              </p>
+              <p>{OLHAR_ERGONOMIA}</p>
             </div>
           </div>
+          <ul className="ap-lista ap-densa">
+            <li>Diretiva, arts. 9º a 12: transparência, supervisão humana, explicação e revisão, segurança e saúde {cita("ue")}.</li>
+            <li>
+              Substitutivo do PLP, em tramitação: informação antes do aceite, recusa sem penalidade e defesa antes da sanção, com exceções
+              (arts. 12, 13, 17 e 18) {cita("brasil")}.
+            </li>
+            <li>Nos dois: não localizamos prazo mínimo para decidir nem limite de corridas encadeadas.</li>
+          </ul>
         </>
       ),
     },
@@ -256,7 +285,7 @@ export function montarSlides(m: Metricas): Slide[] {
         <>
           <div className="ap-rotulo">Como funciona</div>
           <h2>
-            Nove segundos <em>para decidir</em>
+            Pouco tempo <em>para decidir</em>
           </h2>
           <div className="ap-grade ap-g2">
             <div className="ap-cartao">
@@ -277,6 +306,7 @@ export function montarSlides(m: Metricas): Slide[] {
           <ul className="ap-lista">
             <li>Pontos de sobrecarga sobem em tempo real; no fim, o visitante vê o que pesou.</li>
             <li>Ao aplicar os requisitos ergonômicos, os pontos daquele mecanismo caem.</li>
+            <li>{PORQUE_9S}</li>
           </ul>
         </>
       ),
@@ -305,7 +335,7 @@ export function montarSlides(m: Metricas): Slide[] {
                 <td>
                   <b>Pressão de tempo</b>
                 </td>
-                <td>Corrida complexa (limite {TEMPO_COMPLEXA_S} s) aceita em menos de 10 s</td>
+                <td>Aceitar corrida complexa, com pouco tempo para decidir ({TEMPO_COMPLEXA_S} s no jogo)</td>
                 <td>+{PONTOS.tempo}</td>
               </tr>
               <tr>
@@ -364,7 +394,7 @@ export function montarSlides(m: Metricas): Slide[] {
             O que o público <em>jogou</em>
           </h2>
           {m.rodadas === 0 ? (
-            <p className="ap-lead">Nenhuma rodada ainda. Jogue uma em /jogo e volte aqui.</p>
+            <p className="ap-lead">Resultados em consolidação.</p>
           ) : (
             <div className="ap-grade ap-g4">
               {(
@@ -386,10 +416,13 @@ export function montarSlides(m: Metricas): Slide[] {
             <p className="ap-peq">
               Pontos por mecanismo (soma): tempo {m.porMecanismo.tempo} · encadeadas {m.porMecanismo.encadeadas} · opacidade{" "}
               {m.porMecanismo.opacidade}. Rodadas com recusa por segurança: {m.rodadasComRecusaSeguranca}. Com cartas: {m.porModo.cartas} ·
-              digital: {m.porModo.digital}.
+              digital: {m.porModo.digital}. Respostas de pressão percebida: {m.percepcaoRespostas} (notas 1 a 5:{" "}
+              {m.percepcaoDistribuicao.join(", ")}).
             </p>
           )}
-          <p className="ap-aviso">Amostra de conveniência na Mostra, sem pretensão científica. {AVISO_FICTICIO}</p>
+          <p className="ap-aviso">
+            {AVISO_AMOSTRA} {AVISO_FICTICIO}
+          </p>
         </>
       ),
     },
@@ -403,12 +436,10 @@ export function montarSlides(m: Metricas): Slide[] {
           <h2>
             O que isto <em>não é</em>
           </h2>
-          <ul className="ap-lista ap-grande">
-            <li>Não mede fadiga nem carga mental de ninguém: pontos e nota são fictícios.</li>
-            <li>Não é pesquisa com pessoas: não há coleta primária; a pressão percebida é opinião.</li>
-            <li>Não generaliza: a amostra da Mostra é de conveniência.</li>
-            <li>Não esgota o tema: a comparação dos documentos normativos é do artigo.</li>
-            <li>A participação é voluntária: pode parar a qualquer momento.</li>
+          <ul className="ap-lista" style={{ fontSize: 27 }}>
+            {LIMITES.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
           </ul>
         </>
       ),
