@@ -33,6 +33,9 @@ a{color:inherit}
   .topo-links a{flex:1 0 auto;min-height:44px;padding:0 6px}
 }
 
+/* logo em texto: cursor de texto e um clique seleciona tudo, para copiar */
+.topo .marca,.tela .faixa .marca{cursor:text;-webkit-user-select:all;user-select:all}
+
 /* botões */
 .btn{display:inline-block;font-weight:800;font-size:20px;line-height:1;font-family:Archivo;font-stretch:75%;letter-spacing:.12em;text-transform:uppercase;background:var(--tinta);color:var(--papel);border:4px solid var(--tinta);padding:16px 26px;cursor:pointer;text-decoration:none;box-shadow:6px 6px 0 var(--laranja);transition:transform .08s,box-shadow .08s}
 .btn:hover{transform:translate(2px,2px);box-shadow:4px 4px 0 var(--laranja)}
@@ -97,9 +100,14 @@ table.tab td{border-bottom:2px solid var(--tinta);padding:6px 8px;vertical-align
 @media(max-width:960px){.operador{grid-template-columns:1fr}}
 
 /* tela do visitante */
-.tela{min-height:100vh;background:var(--papel);display:grid;grid-template-rows:auto 1fr auto;padding:0 0 28px}
-.tela .faixa{background:var(--tinta);color:var(--papel);display:flex;justify-content:space-between;padding:14px 40px;font-weight:700;font-size:clamp(14px,1.6vw,24px);font-family:Plex;;letter-spacing:.06em}
-.tela .faixa b{color:var(--laranja)}
+.tela{min-height:100vh;min-height:100dvh;background:var(--papel);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr auto;padding:0 0 28px;overflow-x:clip}
+.tela .faixa{background:var(--tinta);color:var(--papel);display:flex;align-items:stretch;font-weight:700;font-size:clamp(14px,1.3vw,20px);font-family:Plex,monospace;letter-spacing:.06em}
+.tela .faixa > *{display:flex;align-items:center;min-height:52px}
+.tela .faixa .marca{margin-right:auto;padding:0 16px 0 24px}
+.tela .faixa a{padding:0 32px;background:var(--laranja);color:var(--tinta);text-transform:uppercase;text-decoration:none}
+.tela .faixa a:hover{background:var(--papel)}
+.tela .faixa a:focus-visible{outline:3px solid var(--tinta);outline-offset:-6px}
+.tela .lado{display:flex;flex-direction:column;gap:24px;max-width:420px}
 .tela .miolo{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:48px;align-items:center;padding:28px 56px}
 .tela .centro{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
 .tela h1{font-weight:900;font-size:clamp(56px,9vw,150px);line-height:.85;font-family:Archivo;;font-stretch:62%;text-transform:uppercase}
@@ -109,7 +117,36 @@ table.tab td{border-bottom:2px solid var(--tinta);padding:6px 8px;vertical-align
 .aviso{border:5px solid var(--tinta);background:var(--ticket);padding:16px 20px;font-weight:700;font-size:clamp(16px,1.8vw,26px);line-height:1.25;font-family:Plex;;box-shadow:8px 8px 0 var(--laranja);max-width:640px}
 .aviso.opaco{background:var(--tinta);color:var(--papel);box-shadow:8px 8px 0 var(--laranja)}
 .tela .rodape{padding:0 56px;font-weight:500;font-size:clamp(12px,1.2vw,16px);font-family:Plex;;color:var(--cinza)}
-@media(max-width:900px){.tela .miolo{grid-template-columns:1fr;padding:20px}.tela .faixa{padding:12px 20px}.tela .rodape{padding:0 20px}}
+@media(max-width:900px){.tela .miolo{grid-template-columns:minmax(0,1fr);align-content:start;gap:32px;padding:20px}.tela .lado{max-width:none}.tela .rodape{padding:0 20px}}
+/* mesma quebra do menu */
+@media(max-width:720px){
+  .tela .faixa .marca{padding-left:16px}
+  .tela .faixa a{padding:0 20px}
+  /* !important: a altura da barra vem em style no componente */
+  .tela .medidor .barra{flex-direction:row;height:auto!important;gap:4px;padding:6px}
+  .tela .medidor .barra i{min-height:28px}
+  .tela .medidor .num{font-size:56px}
+  .tela .painel{width:100%;padding:16px 14px}
+  .tela table.tab thead{display:none}
+  .tela table.tab,.tela table.tab tbody,.tela table.tab tr,.tela table.tab td{display:block}
+  .tela table.tab tr{border-bottom:3px solid var(--tinta);padding:8px 0}
+  .tela table.tab td{border:0;padding:4px 0}
+}
+/* carta-corrida em telas estreitas: cabe inteira, com botões de toque */
+@media(max-width:600px){
+  .pilha{padding:0 4px}
+  .ticket{padding:16px;box-shadow:6px 6px 0 var(--tinta);transform:none}
+  .ticket .h{font-size:16px;gap:8px}
+  .ticket .row{font-size:16px}
+  .ticket .obs{font-size:14px}
+  .ticket .lab{font-size:15px}
+  .ticket .t{font-size:clamp(52px,19vw,80px)}
+  .ticket .aceitar{width:100%;font-size:28px}
+  .ticket .recusar{position:static;margin-top:16px;text-align:center}
+  .ticket .recusas{justify-content:space-between;gap:4px 12px;margin-top:14px}
+  .ticket .recusa{min-height:44px}
+}
+@media(hover:none){.ticket kbd,.tela .btn kbd{display:none}}
 
 /* slides institucionais */
 .slides{scroll-snap-type:y proximity}
@@ -138,6 +175,25 @@ table.tab td{border-bottom:2px solid var(--tinta);padding:6px 8px;vertical-align
 
 /* roteiro */
 .roteiro{max-width:900px;margin:0 auto;padding:32px 24px 80px;display:flex;flex-direction:column;gap:24px}
+
+/* resultados */
+.acoes-resultados{display:flex;gap:14px}
+.confirmar{margin:auto;width:min(440px,calc(100vw - 32px));border:5px solid var(--tinta);background:var(--ticket);color:var(--tinta);padding:22px;box-shadow:10px 10px 0 var(--laranja)}
+.confirmar::backdrop{background:rgb(22 19 14 / .75)}
+.confirmar h2{font-weight:900;font-size:30px;line-height:1;font-family:Archivo;font-stretch:70%;text-transform:uppercase;margin-bottom:12px}
+.confirmar p{margin-bottom:20px}
+/* dez colunas não cabem: cada rodada vira um cartão com rótulos */
+@media(max-width:1000px){
+  table.tab.rodadas,table.tab.rodadas tbody{display:block}
+  table.tab.rodadas thead{display:none}
+  table.tab.rodadas tr{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px 12px;border-bottom:3px solid var(--tinta);padding:12px 0}
+  table.tab.rodadas tr:last-child{border-bottom:0;padding-bottom:0}
+  table.tab.rodadas td{border:0;padding:0;overflow-wrap:anywhere}
+  table.tab.rodadas td::before{content:attr(data-label);display:block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza)}
+}
+@media(max-width:480px){
+  .acoes-resultados .btn{flex:1 1 auto;font-size:16px;padding:14px 10px}
+}
 .bloco{border:4px solid var(--tinta);background:var(--ticket);box-shadow:8px 8px 0 var(--tinta);padding:18px 22px}
 .bloco .tempo{font:700 14px Plex;color:var(--laranja);letter-spacing:.08em}
 .bloco h3{font-weight:900;font-size:30px;line-height:1;font-family:Archivo;font-stretch:70%;text-transform:uppercase;margin:4px 0 10px}

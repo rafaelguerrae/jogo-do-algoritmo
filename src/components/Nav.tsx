@@ -10,7 +10,7 @@ const LINKS = [
   ["/baralho", "Baralho"],
 ] as const;
 
-/** Telas cheias, sem navegação: a do visitante e a apresentação. */
+/** Telas cheias, sem o menu: a do visitante (só volta ao projeto) e a apresentação. */
 const SEM_NAV = new Set(["/tela", "/apresentacao"]);
 
 export default function Nav() {

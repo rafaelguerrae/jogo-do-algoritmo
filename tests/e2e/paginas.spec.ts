@@ -30,6 +30,12 @@ test("a navegação principal liga as abas do menu e some nas telas cheias", asy
   await expect(page.getByRole("navigation", { name: "Principal" })).toHaveCount(0);
 });
 
+test("o botão Projeto da tela do visitante volta para a página inicial", async ({ page }) => {
+  await page.goto("/tela/");
+  await page.getByRole("link", { name: "Projeto" }).click();
+  await expect(page).toHaveURL(/:\d+\/$/);
+});
+
 test("o menu cabe em tela de celular, com alvos de toque de 44 px", async ({ page }) => {
   for (const largura of [320, 375, 430]) {
     await page.setViewportSize({ width: largura, height: 700 });
@@ -74,6 +80,43 @@ test.describe("apresentação", () => {
     for (const t of ["Definições", "Fontes", "Métricas do jogo", "Resultados da Mostra"]) {
       expect(titulos.join("|")).toContain(t);
     }
+  });
+});
+
+test.describe("resultados", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/resultados/");
+    await page.evaluate(() => {
+      const rodada = { id: "1", inicio: Date.now(), fim: Date.now(), status: "fim", apelido: "visitante 12", eventos: [], pontos: 7 };
+      localStorage.setItem("jda:sessoes", JSON.stringify([rodada]));
+    });
+    await page.reload();
+  });
+
+  test("no celular a rodada aparece inteira e os botões ficam na mesma linha", async ({ page }) => {
+    for (const width of [320, 375]) {
+      await page.setViewportSize({ width, height: 700 });
+      for (const celula of await page.locator("table.rodadas td").all()) {
+        const caixa = await celula.boundingBox();
+        expect((caixa?.x ?? 0) + (caixa?.width ?? 0)).toBeLessThanOrEqual(width);
+      }
+      const exportar = await page.getByRole("button", { name: "Exportar CSV" }).boundingBox();
+      const apagar = await page.getByRole("button", { name: "Apagar" }).boundingBox();
+      expect(apagar?.y).toBe(exportar?.y);
+      expect((apagar?.x ?? 0) + (apagar?.width ?? 0)).toBeLessThanOrEqual(width);
+    }
+  });
+
+  test("apagar só depois de confirmar no diálogo", async ({ page }) => {
+    const dialogo = page.getByRole("dialog", { name: "Apagar rodadas?" });
+    await page.getByRole("button", { name: "Apagar" }).click();
+    await dialogo.getByRole("button", { name: "Cancelar" }).click();
+    await expect(dialogo).toBeHidden();
+    await expect(page.getByRole("cell", { name: "visitante 12" })).toBeVisible();
+
+    await page.getByRole("button", { name: "Apagar" }).click();
+    await dialogo.getByRole("button", { name: "Apagar" }).click();
+    await expect(page.getByText(/Nenhuma rodada ainda/)).toBeVisible();
   });
 });
 

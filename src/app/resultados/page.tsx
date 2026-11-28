@@ -1,5 +1,5 @@
 "use client";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { modoDe, resolvidas, sessaoParaCsv, somaPor, tempoMedioDecisaoS } from "@/lib/game";
 import { f1, MECANISMOS, metricas } from "@/lib/metricas";
 import { limparSessoes, useSessoes } from "@/lib/store";
@@ -10,6 +10,7 @@ export default function Resultados() {
   const todas = useSessoes();
   const lista = useMemo(() => [...todas].sort((a, b) => b.inicio - a.inicio), [todas]);
   const m = useMemo(() => metricas(lista), [lista]);
+  const confirmar = useRef<HTMLDialogElement>(null);
 
   const baixar = () => {
     const blob = new Blob([`﻿${sessaoParaCsv(lista)}`], { type: "text/csv;charset=utf-8" });
@@ -31,7 +32,7 @@ export default function Resultados() {
 
   return (
     <main className="roteiro" style={{ maxWidth: 1100 }}>
-      <h1 className="cond" style={{ fontSize: 72 }}>
+      <h1 className="cond" style={{ fontSize: "min(72px,16vw)" }}>
         Resultados <span className="laranja">da Mostra</span>
       </h1>
       <p className="rotulo">
@@ -77,7 +78,7 @@ export default function Resultados() {
             Nenhuma rodada ainda. Jogue uma em <b>Jogo</b>.
           </p>
         ) : (
-          <table className="tab">
+          <table className="tab rodadas">
             <thead>
               <tr>
                 <th>Hora</th>
@@ -97,18 +98,18 @@ export default function Resultados() {
                 const t = tempoMedioDecisaoS(s);
                 return (
                   <tr key={s.id}>
-                    <td>{new Date(s.inicio).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</td>
-                    <td>{modoDe(s) === "digital" ? "digital" : "cartas"}</td>
-                    <td>{s.apelido || "–"}</td>
-                    <td>{resolvidas(s)}</td>
-                    <td>
+                    <td data-label="Hora">{new Date(s.inicio).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</td>
+                    <td data-label="Modo">{modoDe(s) === "digital" ? "digital" : "cartas"}</td>
+                    <td data-label="Visitante">{s.apelido || "–"}</td>
+                    <td data-label="Corridas">{resolvidas(s)}</td>
+                    <td data-label="Pontos">
                       <span className="pt">{s.pontos}</span>
                     </td>
-                    <td>{somaPor(s, "tempo")}</td>
-                    <td>{somaPor(s, "encadeadas")}</td>
-                    <td>{somaPor(s, "opacidade")}</td>
-                    <td>{t !== null ? f1(t) : "–"}</td>
-                    <td>{s.percepcao ?? "–"}</td>
+                    <td data-label="Tempo">{somaPor(s, "tempo")}</td>
+                    <td data-label="Seguidas">{somaPor(s, "encadeadas")}</td>
+                    <td data-label="Opacidade">{somaPor(s, "opacidade")}</td>
+                    <td data-label="Decisão (s)">{t !== null ? f1(t) : "–"}</td>
+                    <td data-label="Pressão 1–5">{s.percepcao ?? "–"}</td>
                   </tr>
                 );
               })}
@@ -117,20 +118,27 @@ export default function Resultados() {
         )}
       </div>
 
-      <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+      <div className="acoes-resultados">
         <button className="btn" disabled={!lista.length} onClick={baixar}>
           Exportar CSV
         </button>
-        <button
-          className="btn claro"
-          disabled={!lista.length}
-          onClick={() => {
-            if (window.confirm("Apagar todas as rodadas salvas neste navegador?")) limparSessoes();
-          }}
-        >
-          Apagar tudo
+        <button className="btn claro" disabled={!lista.length} onClick={() => confirmar.current?.showModal()}>
+          Apagar
         </button>
       </div>
+
+      <dialog ref={confirmar} className="confirmar" aria-labelledby="confirmar-titulo" aria-describedby="confirmar-texto">
+        <h2 id="confirmar-titulo">Apagar rodadas?</h2>
+        <p id="confirmar-texto">Todas as rodadas salvas neste navegador serão apagadas. Não dá para desfazer.</p>
+        <form method="dialog" className="acoes">
+          <button type="submit" className="btn claro">
+            Cancelar
+          </button>
+          <button type="submit" className="btn laranja" onClick={limparSessoes}>
+            Apagar
+          </button>
+        </form>
+      </dialog>
     </main>
   );
 }

@@ -41,7 +41,7 @@ Node 22.12+ (`.nvmrc`). O lint é Biome (e não ESLint) porque typescript-eslint
 - `src/components/Nav.tsx`: menu (Projeto, Jogo, Resultados, Baralho e botão Visitante). `/apresentacao`, `/roteiro` e `/banner` ficam fora do menu de propósito: acesso só pelo endereço, não relinkar
 - `src/app/apresentacao`: slides 1600x900 escalados para a janela (setas, F, N, ?, `#n`); conteúdo em `src/components/apresentacao/slides.tsx`
 - `src/app/jogo`: painel do operador; escolhe o modo (cartas ou digital). Atalhos N, A, S, R, P só no modo cartas
-- `src/app/tela`: tela do visitante (sem navegação), sincroniza com `/jogo`. No modo digital é onde se joga e é ela quem conduz o relógio
+- `src/app/tela`: tela do visitante (sem o menu; só o botão Projeto, que volta para `/`), sincroniza com `/jogo`. No modo digital é onde se joga e é ela quem conduz o relógio
 - `src/app/resultados`: histórico, médias, tempo de decisão, exportação CSV
 - `src/app/baralho`: 24 cartas 63 × 88 mm + versos, impressão A4 (9 por folha)
 - `src/app/banner`: prévia e download do banner (arquivos em `public/banner/`)
@@ -65,7 +65,7 @@ Node 22.12+ (`.nvmrc`). O lint é Biome (e não ESLint) porque typescript-eslint
 
 Estado único em `localStorage` (`jda:estado`, `jda:sessoes`). Sincronização por `BroadcastChannel` + evento `storage`, na mesma máquina e navegador. `definirEstado` salva a rodada sozinho quando `status === "fim"`.
 
-- **Modo cartas:** `/jogo` escreve e controla o relógio e a expiração; `/tela` só lê.
+- **Modo cartas:** `/jogo` controla o relógio, as ofertas e a expiração; o visitante também pode decidir em `/tela` (botões/teclas A, S, R).
 - **Modo digital:** `/tela` decide (botões/teclas), expira corridas e oferece a próxima sozinha (`proximaEm`, `deveOferecer`); `/jogo` só acompanha. A tela grava um batimento (`jda:tela-viva`) para o `/jogo` avisar se ela não estiver aberta.
 - Estados salvos antes do modo digital não têm `modo`: usar `modoDe(e)` (vale `cartas`).
 

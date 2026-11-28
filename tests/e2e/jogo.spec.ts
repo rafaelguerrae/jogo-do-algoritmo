@@ -40,9 +40,6 @@ test.describe("modo com cartas", () => {
     await expect(page.getByText("Total com os requisitos aplicados")).toBeVisible();
     await expect(page.getByText(/5 corridas · 6 pontos/)).toBeVisible();
 
-    // a tela do visitante só espelha: não tem botões de decisão
-    await expect(tela.getByRole("button", { name: /ACEITAR/ })).toHaveCount(0);
-
     // aplicar os requisitos reduz o total
     await page.getByRole("button", { name: "Aplicar" }).first().click();
     await expect(page.getByText(/Total com os requisitos aplicados: 5 pts \(era 6\)/)).toBeVisible();
@@ -51,6 +48,42 @@ test.describe("modo com cartas", () => {
     await page.goto("/resultados/");
     await expect(page.getByRole("cell", { name: "e2e-cartas" })).toBeVisible();
     await expect(page.getByRole("cell", { name: "cartas", exact: true })).toBeVisible();
+  });
+
+  test("o visitante também decide na própria tela e o operador acompanha", async ({ page, context }) => {
+    await iniciar(page, "cartas", 8);
+    const tela = await context.newPage();
+    await tela.goto("/tela/");
+    for (const [id, botao] of [
+      [2, /^ACEITAR/],
+      [3, /^recusar R/],
+      [17, /recusar por segurança/],
+    ] as const) {
+      await page.getByLabel("ou carta nº").fill(String(id));
+      await page.getByRole("button", { name: "Usar carta" }).click();
+      await tela.getByRole("button", { name: botao }).click();
+      await expect(tela.getByRole("button", { name: /^ACEITAR/ })).toHaveCount(0);
+    }
+    await expect(page.getByText(/Corrida 17 recusada por segurança/).first()).toBeVisible();
+  });
+
+  test("a corrida cabe na tela do celular", async ({ page }) => {
+    await iniciar(page, "cartas", 8);
+    await page.keyboard.press("n");
+    for (const [width, height] of [
+      [320, 640],
+      [375, 667],
+    ]) {
+      await page.setViewportSize({ width, height });
+      await page.goto("/tela/");
+      for (const nome of [/^ACEITAR/, /^recusar R/, /recusar por segurança/]) {
+        const caixa = await page.getByRole("button", { name: nome }).boundingBox();
+        expect(caixa?.height).toBeGreaterThanOrEqual(44);
+        expect((caixa?.x ?? 0) + (caixa?.width ?? 0)).toBeLessThanOrEqual(width);
+        expect((caixa?.y ?? 0) + (caixa?.height ?? 0)).toBeLessThanOrEqual(height);
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    }
   });
 
   test("pausa simulada zera a sequência", async ({ page }) => {
